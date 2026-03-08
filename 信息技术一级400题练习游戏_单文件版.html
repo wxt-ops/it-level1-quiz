@@ -1,0 +1,6156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>信息技术一级 400题闯关游戏</title>
+  <style>
+:root {
+  --bg: #fff6fb;
+  --card: #fffefe;
+  --text: #3b2b44;
+  --muted: #7f6f8a;
+  --brand: #ff6fa8;
+  --brand-2: #ffb347;
+  --danger: #b42318;
+  --ok: #067647;
+  --border: #f2cde0;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 10%, #fff 0%, #ffe8f5 34%),
+    radial-gradient(circle at 90% 10%, #fff7e8 0%, transparent 25%),
+    linear-gradient(145deg, #fff0f8, #fffaf2);
+  transition: background 0.5s ease;
+}
+body.theme-mint {
+  background:
+    radial-gradient(circle at 15% 10%, #fff 0%, #dff8f0 36%),
+    linear-gradient(145deg, #e9fff7, #f5fffb);
+}
+body.theme-sunset {
+  background:
+    radial-gradient(circle at 15% 10%, #fff 0%, #ffe9da 34%),
+    linear-gradient(145deg, #fff2e8, #fff8f0);
+}
+body.theme-sky {
+  background:
+    radial-gradient(circle at 15% 10%, #fff 0%, #e5f2ff 35%),
+    linear-gradient(145deg, #eef7ff, #f8fbff);
+}
+
+.app {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.hero h1 { margin: 0 0 8px; font-size: clamp(24px, 3.6vw, 38px); }
+.hero p { margin: 0 0 10px; color: var(--muted); }
+.hero-sub { margin-top: -2px; color: #b65088; font-weight: 700; }
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 8px 30px rgba(245, 118, 170, 0.12);
+}
+
+.panel + .panel { margin-top: 16px; }
+.field { margin-bottom: 12px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+label { display: block; font-weight: 700; margin-bottom: 6px; }
+select, input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 15px;
+  background: #fff;
+}
+
+.btn {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn:hover { filter: brightness(0.98); }
+.btn.primary { background: var(--brand); color: #fff; border-color: var(--brand); }
+.btn.danger { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+.tip { color: var(--muted); min-height: 22px; margin: 8px 0 0; }
+.quiz-meta {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #ffe5f1;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #ff8cc0, #ffa9b4, #ffc37e);
+  transition: width 0.25s ease;
+}
+.fun-tip {
+  margin: 0 0 12px;
+  color: #b04b7f;
+  font-weight: 700;
+  min-height: 22px;
+}
+.egg-toast {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px dashed #ffb7d7;
+  background: #fff5fb;
+  color: #9e3c72;
+  font-weight: 700;
+  animation: popToast 0.35s ease;
+}
+.egg-toast.success {
+  border-color: #9bd5b5;
+  background: #effcf4;
+  color: #0a7a4e;
+}
+.egg-toast.encourage {
+  border-color: #ffd0a8;
+  background: #fff7ef;
+  color: #a75a13;
+}
+.egg-toast.lucky {
+  border-color: #b7ccff;
+  background: #f2f6ff;
+  color: #3158b8;
+}
+.question-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+}
+.question-title { font-weight: 700; line-height: 1.6; margin-bottom: 12px; }
+.options { display: grid; gap: 10px; }
+.option {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  display: block;
+}
+.option input { width: auto; margin-right: 8px; }
+.option.selected { border-color: var(--brand); background: #fff0f7; }
+
+.actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.summary .item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+}
+.summary .item strong { display: block; font-size: 20px; }
+.wrong-list { display: grid; gap: 10px; margin-bottom: 14px; }
+.wrong-item {
+  border: 1px solid #f3c7c2;
+  background: #fff5f4;
+  border-radius: 10px;
+  padding: 12px;
+}
+.good { color: var(--ok); font-weight: 700; }
+.bad { color: var(--danger); font-weight: 700; }
+.celebration {
+  border: 1px dashed #ffc7df;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #fff4fb;
+}
+.burst {
+  font-size: 24px;
+  letter-spacing: 4px;
+  animation: pop 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes pop {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-2px) scale(1.05); }
+}
+@keyframes popToast {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .summary { grid-template-columns: 1fr 1fr; }
+  .quiz-meta { grid-template-columns: 1fr 1fr; }
+  .field-row { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <h1>信息技术一级 400题闯关游戏</h1>
+      <p>支持随机练习、闯关模式、分类练习，交卷后自动评分并给出错题解析。</p>
+      <p class="hero-sub">今天也和小可爱题库一起拿高分吧。</p>
+    </header>
+
+    <section id="setup-panel" class="panel">
+      <h2>开始练习</h2>
+
+      <div class="field">
+        <label for="mode">练习模式</label>
+        <select id="mode">
+          <option value="random">随机做题</option>
+          <option value="level">闯关模式</option>
+          <option value="category">题型分类练习</option>
+          <option value="wrong">只练习错题</option>
+        </select>
+      </div>
+
+      <div class="field" id="category-field" hidden>
+        <label for="category">选择分类</label>
+        <select id="category"></select>
+      </div>
+
+      <div class="field" id="count-field">
+        <label for="count">题目数量</label>
+        <input id="count" type="number" min="1" max="400" value="20" />
+      </div>
+
+      <div id="level-fields" class="field-row" hidden>
+        <div class="field">
+          <label for="level-count">每关题量</label>
+          <input id="level-count" type="number" min="1" max="50" value="10" />
+        </div>
+        <div class="field">
+          <label for="level-total">闯关关数</label>
+          <input id="level-total" type="number" min="1" max="40" value="5" />
+        </div>
+      </div>
+
+      <button id="start-btn" class="btn primary">开始</button>
+      <button id="open-wrongbook-btn" class="btn">查看错题本</button>
+      <p id="setup-tip" class="tip"></p>
+    </section>
+
+    <section id="quiz-panel" class="panel" hidden>
+      <div class="quiz-meta">
+        <div id="mode-title"></div>
+        <div id="progress"></div>
+        <div id="score-preview"></div>
+        <div id="timer"></div>
+      </div>
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <p id="fun-tip" class="fun-tip"></p>
+      <div id="egg-toast" class="egg-toast" hidden></div>
+
+      <article id="question-card" class="question-card"></article>
+
+      <div class="actions">
+        <button id="back-btn" class="btn">返回设置</button>
+        <button id="prev-btn" class="btn">上一题</button>
+        <button id="next-btn" class="btn">下一题</button>
+        <button id="submit-btn" class="btn danger">交卷</button>
+      </div>
+    </section>
+
+    <section id="result-panel" class="panel" hidden>
+      <h2>成绩反馈</h2>
+      <p id="result-title"></p>
+      <div id="celebration" class="celebration" hidden></div>
+      <div id="summary" class="summary"></div>
+      <h3>错题解析</h3>
+      <div id="wrong-list" class="wrong-list"></div>
+      <button id="result-wrongbook-btn" class="btn">查看错题本</button>
+      <button id="restart-btn" class="btn primary">再来一轮</button>
+    </section>
+
+    <section id="wrongbook-panel" class="panel" hidden>
+      <h2>错题本学习</h2>
+      <p id="wrongbook-tip" class="tip"></p>
+      <div id="wrongbook-list" class="wrong-list"></div>
+      <div class="actions">
+        <button id="close-wrongbook-btn" class="btn">返回设置</button>
+        <button id="clear-wrongbook-btn" class="btn danger">清空错题本</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+window.QUESTION_BANK = {
+  "total": 400,
+  "categories": [
+    "计算机的发展",
+    "信息的存储与表示",
+    "多媒体技术简介",
+    "计算机病毒及其防治",
+    "计算机的硬件系统",
+    "计算机的软件系统",
+    "操作系统",
+    "计算机网络基本概念",
+    "因特网基础",
+    "使用简单的因特网应用"
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "category": "计算机的发展",
+      "question": "1946年首台电子数字计算机ENIAC问世后，冯·诺伊曼（Von Neumann）在研制EDVAC计算机时，提出两个重要的改进，它们是______。",
+      "options": {
+        "A": "采用二进制和存储程序控制的概念",
+        "B": "引入CPU和内存储器的概念",
+        "C": "采用机器语言和十六进制",
+        "D": "采用ASCII编码系统"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（采用二进制和存储程序控制的概念）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 2,
+      "category": "计算机的发展",
+      "question": "现代微型计算机中所采用的电子器件是______。",
+      "options": {
+        "A": "电子管",
+        "B": "晶体管",
+        "C": "小规模集成电路",
+        "D": "大规模和超大规模集成电路"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（大规模和超大规模集成电路）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 3,
+      "category": "计算机的发展",
+      "question": "办公室自动化（OA）按计算机应用的分类，它属于________。",
+      "options": {
+        "A": "科学计算",
+        "B": "辅助设计",
+        "C": "实时控制",
+        "D": "数据处理"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（数据处理）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 4,
+      "category": "计算机的发展",
+      "question": "下列不属于计算机特点的是______。",
+      "options": {
+        "A": "存储程序控制，工作自动化",
+        "B": "具有逻辑推理和判断能力",
+        "C": "处理速度快、存储量大",
+        "D": "不可靠、故障率高。"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（不可靠、故障率高。）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 5,
+      "category": "计算机的发展",
+      "question": "英文缩写CAI的中文意思是______。",
+      "options": {
+        "A": "计算机辅助教学",
+        "B": "计算机辅助制造",
+        "C": "计算机辅助设计",
+        "D": "计算机辅助管理"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（计算机辅助教学）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 6,
+      "category": "计算机的发展",
+      "question": "下列的英文缩写和中文名字的对照中，错误的是______。",
+      "options": {
+        "A": "CAD--计算机辅助设计",
+        "B": "CAM--计算机辅助制造",
+        "C": "CIMS--计算机集成管理系统",
+        "D": "CAI--计算机辅助教育"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（CIMS--计算机集成管理系统）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 7,
+      "category": "计算机的发展",
+      "question": "按电子计算机传统的分代方法，第一代至第四代计算机依次是______。",
+      "options": {
+        "A": "机械计算机，电子管计算机，晶体管计算机，集成电路计算机",
+        "B": "晶体管计算机，集成电路计算机，大规模集成电路计算机，光器件计算机",
+        "C": "电子管计算机，晶体管计算机，小、中规模集成电路计算机，大规模和超大规模集成电路计算机",
+        "D": "手摇机械计算机，电动机械计算机，电子管计算机，晶体管计算机"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（电子管计算机，晶体管计算机，小、中规模集成电路计算机，大规模和超大规模集成电路计算机）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 8,
+      "category": "计算机的发展",
+      "question": "计算机技术中，下列的英文缩写和中文名字的对照中，正确的是______。",
+      "options": {
+        "A": "CAD--计算机辅助制造",
+        "B": "CAM--计算机辅助教育",
+        "C": "CIMS--计算机集成制造系统",
+        "D": "CAI--计算机辅助设计"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（CIMS--计算机集成制造系统）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 9,
+      "category": "计算机的发展",
+      "question": "电子计算机最早的应用领域是______。",
+      "options": {
+        "A": "数据处理",
+        "B": "科学计算",
+        "C": "工业控制",
+        "D": "文字处理"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（科学计算）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 10,
+      "category": "计算机的发展",
+      "question": "世界上第一台计算机是1946年美国研制成功的，该计算机的英文缩写名为______。",
+      "options": {
+        "A": "MARK-II",
+        "B": "ENIAC",
+        "C": "EDSAC",
+        "D": "EDVAC"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（ENIAC）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 11,
+      "category": "计算机的发展",
+      "question": "下列的英文缩写和中文名字的对照中，正确的是______。",
+      "options": {
+        "A": "CAD--计算机辅助设计",
+        "B": "CAM--计算机辅助教育",
+        "C": "CIMS--计算机集成管理系统",
+        "D": "CAI--计算机辅助制造"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（CAD--计算机辅助设计）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 12,
+      "category": "计算机的发展",
+      "question": "办公室自动化（OA）是计算机的一项应用，按计算机应用的分类，它属于______。",
+      "options": {
+        "A": "科学计算",
+        "B": "辅助设计",
+        "C": "实时控制",
+        "D": "信息处理"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（信息处理）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 13,
+      "category": "计算机的发展",
+      "question": "世界上公认的第一台电子计算机诞生的年代是______。",
+      "options": {
+        "A": "20世纪30年代",
+        "B": "20世纪40年代",
+        "C": "20世纪80年代",
+        "D": "20世纪90年代"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（20世纪40年代）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 14,
+      "category": "计算机的发展",
+      "question": "\"铁路联网售票系统\"，按计算机应用的分类，它属于______。",
+      "options": {
+        "A": "科学计算",
+        "B": "辅助设计",
+        "C": "实时控制",
+        "D": "信息处理"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（信息处理）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 15,
+      "category": "计算机的发展",
+      "question": "目前的许多消费电子产品（数码相机、数字电视机等）中都使用了不同功能的微处理器来完成特定的处理任务，计算机的这种应用属于______。",
+      "options": {
+        "A": "科学计算",
+        "B": "实时控制",
+        "C": "嵌入式系统",
+        "D": "辅助设计"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（嵌入式系统）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 16,
+      "category": "计算机的发展",
+      "question": "计算机技术应用广泛，以下属于科学计算方面的是______。",
+      "options": {
+        "A": "图像信息处理",
+        "B": "视频信息处理",
+        "C": "火箭轨道计算",
+        "D": "信息检索"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（火箭轨道计算）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 17,
+      "category": "计算机的发展",
+      "question": "\"计算机集成制造系统\"英文简写是______。",
+      "options": {
+        "A": "CAD",
+        "B": "CAM",
+        "C": "CIMS",
+        "D": "ERP"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（CIMS）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 18,
+      "category": "计算机的发展",
+      "question": "关于世界上第一台电子计算机ENIAC的叙述中，错误的是______。",
+      "options": {
+        "A": "ENIAC是1946年在美国诞生的",
+        "B": "它主要采用电子管和继电器",
+        "C": "它是首次采用存储程序和程序控制自动工作的电子计算机",
+        "D": "研制它的主要目的是用来计算弹道"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（它是首次采用存储程序和程序控制自动工作的电子计算机）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 19,
+      "category": "计算机的发展",
+      "question": "世界上公认的第一台电子计算机诞生在______。",
+      "options": {
+        "A": "中国",
+        "B": "美国",
+        "C": "英国",
+        "D": "日本"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（美国）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 20,
+      "category": "计算机的发展",
+      "question": "在下列计算机应用项目中，属于科学计算应用领域的是______。",
+      "options": {
+        "A": "人机对弈",
+        "B": "民航联网订票系统",
+        "C": "气象预报",
+        "D": "数控机床"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（气象预报）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 21,
+      "category": "计算机的发展",
+      "question": "第二代电子计算机的主要元件是______。",
+      "options": {
+        "A": "继电器",
+        "B": "晶体管",
+        "C": "电子管",
+        "D": "集成电路"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（晶体管）。该题属于“计算机的发展”知识点。"
+    },
+    {
+      "id": 22,
+      "category": "信息的存储与表示",
+      "question": "在计算机内部用来传送、存储、加工处理的数据或指令所采用的形式是______。",
+      "options": {
+        "A": "十进制码",
+        "B": "二进制码",
+        "C": "八进制码",
+        "D": "十六进制码"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（二进制码）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 23,
+      "category": "信息的存储与表示",
+      "question": "十进制数18转换成二进制数是______。",
+      "options": {
+        "A": "010101",
+        "B": "101000",
+        "C": "010010",
+        "D": "001010"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（010010）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 24,
+      "category": "信息的存储与表示",
+      "question": "在标准ASCII码表中，已知英文字母A的ASCII码是01000001，则英文字母E的ASCII码是______。",
+      "options": {
+        "A": "01000011",
+        "B": "01000100",
+        "C": "01000101",
+        "D": "01000010"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（01000101）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 25,
+      "category": "信息的存储与表示",
+      "question": "计算机之所以能按人们的意图自动进行工作，最直接的原因是因为采用了______。",
+      "options": {
+        "A": "二进制",
+        "B": "高速电子元件",
+        "C": "程序设计语言",
+        "D": "存储程序控制"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（存储程序控制）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 26,
+      "category": "信息的存储与表示",
+      "question": "十进制整数127转换为二进制整数等于______。",
+      "options": {
+        "A": "1010000",
+        "B": "0001000",
+        "C": "1111111",
+        "D": "1011000"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（1111111）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 27,
+      "category": "信息的存储与表示",
+      "question": "用8位二进制数能表示的最大的无符号整数等于十进制整数______。",
+      "options": {
+        "A": "255",
+        "B": "256",
+        "C": "128",
+        "D": "127"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（255）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 28,
+      "category": "信息的存储与表示",
+      "question": "十进制整数64转换为二进制整数等于______。",
+      "options": {
+        "A": "1100000",
+        "B": "1000000",
+        "C": "1000100",
+        "D": "1000010"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（1000000）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 29,
+      "category": "信息的存储与表示",
+      "question": "存储一个48×48点阵的汉字字形码需要的字节数是______。",
+      "options": {
+        "A": "384",
+        "B": "144",
+        "C": "256",
+        "D": "288"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（288）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 30,
+      "category": "信息的存储与表示",
+      "question": "如果在一个非零无符号二进制整数之后添加一个0，则此数的值为原数的______。",
+      "options": {
+        "A": "4倍",
+        "B": "2倍",
+        "C": "1/2",
+        "D": "1/4"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（2倍）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 31,
+      "category": "信息的存储与表示",
+      "question": "在计算机中，每个存储单元都有一个连续的编号，此编号称为______。",
+      "options": {
+        "A": "地址",
+        "B": "位置号",
+        "C": "门牌号",
+        "D": "房号"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（地址）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 32,
+      "category": "信息的存储与表示",
+      "question": "一个字长为6位的无符号二进制数能表示的十进制数值范围是______。",
+      "options": {
+        "A": "0～64",
+        "B": "0～63",
+        "C": "1～64",
+        "D": "1～63"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（0～63）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 33,
+      "category": "信息的存储与表示",
+      "question": "在下列字符中，其ASCII码值最大的一个是______。",
+      "options": {
+        "A": "9",
+        "B": "Ｑ",
+        "C": "d",
+        "D": "Ｆ"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（d）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 34,
+      "category": "信息的存储与表示",
+      "question": "十进制数100转换成无符号二进制整数是______。",
+      "options": {
+        "A": "0110101",
+        "B": "01101000",
+        "C": "01100100",
+        "D": "01100110"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（01100100）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 35,
+      "category": "信息的存储与表示",
+      "question": "已知英文字母m的ASCII码值为6DH，那么ASCII码值为71H的英文字母是______。",
+      "options": {
+        "A": "M",
+        "B": "j",
+        "C": "P",
+        "D": "q"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（q）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 36,
+      "category": "信息的存储与表示",
+      "question": "一个字长为8位的无符号二进制整数能表示的十进制数值范围是______。",
+      "options": {
+        "A": "0-256",
+        "B": "0-255",
+        "C": "1-256",
+        "D": "1-255"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（0-255）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 37,
+      "category": "信息的存储与表示",
+      "question": "标准的ASCII码用7位二进制位表示，可表示不同的编码个数是______。",
+      "options": {
+        "A": "127",
+        "B": "128",
+        "C": "255",
+        "D": "256"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（128）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 38,
+      "category": "信息的存储与表示",
+      "question": "在微机中，西文字符所采用的编码是______。",
+      "options": {
+        "A": "EBCDIC码",
+        "B": "ASCII码",
+        "C": "国标码",
+        "D": "BCD码"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（ASCII码）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 39,
+      "category": "信息的存储与表示",
+      "question": "汉字国标码(GB2312-80)把汉字分成______。",
+      "options": {
+        "A": "简化字和繁体字两个等级",
+        "B": "一级汉字,二级汉字和三级汉字三个等级",
+        "C": "一级常用汉字,二级次常用汉字两个等级",
+        "D": "常用字,次常用字,罕见字三个等级"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（一级常用汉字,二级次常用汉字两个等级）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 40,
+      "category": "信息的存储与表示",
+      "question": "一个汉字的国标码需用2字节存储，其每个字节的最高二进制位的值分别为______。",
+      "options": {
+        "A": "0，0",
+        "B": "1，0",
+        "C": "0，1",
+        "D": "1，1"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（0，0）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 41,
+      "category": "信息的存储与表示",
+      "question": "一个字长为5位的无符号二进制数能表示的十进制数值范围是______。",
+      "options": {
+        "A": "1～32",
+        "B": "0～31",
+        "C": "1～31",
+        "D": "0～32"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（0～31）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 42,
+      "category": "信息的存储与表示",
+      "question": "1GB的准确值是______。",
+      "options": {
+        "A": "1024×1024 Bytes",
+        "B": "1024 KB",
+        "C": "1024 MB",
+        "D": "1000×1000 KB"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（1024 MB）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 43,
+      "category": "信息的存储与表示",
+      "question": "在下列字符中，其ASCII码值最大的一个是______。",
+      "options": {
+        "A": "Z",
+        "B": "9",
+        "C": "空格字符",
+        "D": "a"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（a）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 44,
+      "category": "信息的存储与表示",
+      "question": "存储1024个24×24点阵的汉字字形码需要的字节数是______。",
+      "options": {
+        "A": "720B",
+        "B": "72KB",
+        "C": "7000B",
+        "D": "7200B"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（72KB）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 45,
+      "category": "信息的存储与表示",
+      "question": "操作系统对磁盘进行读/写操作的物理单位是______。",
+      "options": {
+        "A": "磁道",
+        "B": "字节",
+        "C": "扇区",
+        "D": "文件"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（扇区）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 46,
+      "category": "信息的存储与表示",
+      "question": "在下列字符中，其ASCII码值最小的一个是______。",
+      "options": {
+        "A": "9",
+        "B": "p",
+        "C": "Z",
+        "D": "a"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（9）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 47,
+      "category": "信息的存储与表示",
+      "question": "在计算机中，组成一个字节的二进制位位数是______。",
+      "options": {
+        "A": "1",
+        "B": "2",
+        "C": "4",
+        "D": "8"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（8）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 48,
+      "category": "信息的存储与表示",
+      "question": "KB（千字节）是度量存储器容量大小的常用单位之一， 1KB等于______。",
+      "options": {
+        "A": "1000个字节",
+        "B": "1024个字节",
+        "C": "1000个二进位",
+        "D": "1024个字"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（1024个字节）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 49,
+      "category": "信息的存储与表示",
+      "question": "下列关于ASCII编码的叙述中，正确的是______。",
+      "options": {
+        "A": "一个字符的标准ASCII码占一个字节，其最高二进制位总为1",
+        "B": "所有大写英文字母的ASCII码值都小于小写英文字母'a'的ASCII码值",
+        "C": "所有大写英文字母的ASCII码值都大于小写英文字母'a'的ASCII码值",
+        "D": "标准ASCII码表有256个不同的字符编码"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（所有大写英文字母的ASCII码值都小于小写英文字母'a'的ASCII码值）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 50,
+      "category": "信息的存储与表示",
+      "question": "假设某台式计算机的内存储器容量为128MB，硬盘容量为10GB。硬盘的容量是内存容量的______。",
+      "options": {
+        "A": "40倍",
+        "B": "60倍",
+        "C": "80倍",
+        "D": "100倍"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（80倍）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 51,
+      "category": "信息的存储与表示",
+      "question": "下列叙述中，正确的是______。",
+      "options": {
+        "A": "一个字符的标准ASCII码占一个字节的存储量，其最高位二进制总为0",
+        "B": "大写英文字母的ASCII码值大于小写英文字母的ASCII码值",
+        "C": "同一个英文字母（如A）的ASCII码和它在汉字系统下的全角内码是相同的",
+        "D": "标准ASCII码表的每一个ASCII码都能在屏幕上显示成一个相应的字符"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（一个字符的标准ASCII码占一个字节的存储量，其最高位二进制总为0）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 52,
+      "category": "信息的存储与表示",
+      "question": "下列不是度量存储器容量的单位是______。",
+      "options": {
+        "A": "KB",
+        "B": "MB",
+        "C": "GHz",
+        "D": "GB"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（GHz）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 53,
+      "category": "信息的存储与表示",
+      "question": "在标准ASCII码表中，英文字母a和A的码值之差的十进制值是______。",
+      "options": {
+        "A": "20",
+        "B": "32",
+        "C": "-20",
+        "D": "-32"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（32）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 54,
+      "category": "信息的存储与表示",
+      "question": "在标准ASCII码表中，已知英文字母A的十进制码值是65，英文字母a的十进制码值是______。",
+      "options": {
+        "A": "95",
+        "B": "96",
+        "C": "97",
+        "D": "91"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（97）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 55,
+      "category": "信息的存储与表示",
+      "question": "设任意一个十进制整数为D，转换成二进制数为B。根据数制的概念，下列叙述中正确的是______。",
+      "options": {
+        "A": "数字B的位数<数字D的位数",
+        "B": "数字B的位数≤数字D的位数",
+        "C": "数字B的位数≥数字D的位数",
+        "D": "数字B的位数>数字D的位数"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（数字B的位数≥数字D的位数）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 56,
+      "category": "信息的存储与表示",
+      "question": "在下列字符中，其ASCII码值最小的一个是______。",
+      "options": {
+        "A": "空格字符",
+        "B": "0",
+        "C": "A",
+        "D": "a"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（空格字符）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 57,
+      "category": "信息的存储与表示",
+      "question": "在计算机中，对汉字进行传输、处理和存储时使用汉字的______。",
+      "options": {
+        "A": "字形码",
+        "B": "国标码",
+        "C": "输入码",
+        "D": "机内码"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（机内码）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 58,
+      "category": "信息的存储与表示",
+      "question": "下列4个4位十进制数中，属于正确的汉字区位码的是______。",
+      "options": {
+        "A": "5601",
+        "B": "9596",
+        "C": "9678",
+        "D": "8799"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（5601）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 59,
+      "category": "信息的存储与表示",
+      "question": "已知三个字符为：a、Z和8，按它们的ASCII码值升序排序，结果是______。",
+      "options": {
+        "A": "8，a，Z",
+        "B": "a，8，Z",
+        "C": "a，Z，8",
+        "D": "8，Z，a"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（8，Z，a）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 60,
+      "category": "信息的存储与表示",
+      "question": "计算机技术中，下列度量存储器容量的单位中，最大的单位是______。",
+      "options": {
+        "A": "KB",
+        "B": "MB",
+        "C": "Byte",
+        "D": "GB"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（GB）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 61,
+      "category": "信息的存储与表示",
+      "question": "按照数的进位制概念，下列各个数中正确的八进制数是______。",
+      "options": {
+        "A": "1101",
+        "B": "7081",
+        "C": "1109",
+        "D": "B03A"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（1101）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 62,
+      "category": "信息的存储与表示",
+      "question": "区位码输入法的最大优点是______。",
+      "options": {
+        "A": "只用数码输入，方法简单、容易记忆",
+        "B": "易记易用",
+        "C": "一字一码，无重码",
+        "D": "编码有规律，不易忘记"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（一字一码，无重码）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 63,
+      "category": "信息的存储与表示",
+      "question": "在ASCII码表中，根据码值由小到大的排列顺序是______。",
+      "options": {
+        "A": "空格字符、数字符、大写英文字母、小写英文字母",
+        "B": "数字符、空格字符、大写英文字母、小写英文字母",
+        "C": "空格字符、数字符、小写英文字母、大写英文字母",
+        "D": "数字符、大写英文字母、小写英文字母、空格字符"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（空格字符、数字符、大写英文字母、小写英文字母）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 64,
+      "category": "信息的存储与表示",
+      "question": "如果删除一个非零无符号二进制数尾部的2个0，则此数的值为原数______。",
+      "options": {
+        "A": "4倍",
+        "B": "2倍",
+        "C": "1/2",
+        "D": "1/4"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（1/4）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 65,
+      "category": "信息的存储与表示",
+      "question": "字长为7位的无符号二进制整数能表示的十进制整数的数值范围是______。",
+      "options": {
+        "A": "0～128",
+        "B": "0～255",
+        "C": "0～127",
+        "D": "1～127"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（0～127）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 66,
+      "category": "信息的存储与表示",
+      "question": "根据汉字国标GB2312-80的规定，一个汉字的内码码长为______。",
+      "options": {
+        "A": "8bits",
+        "B": "12bits",
+        "C": "16bits",
+        "D": "24bits"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（16bits）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 67,
+      "category": "信息的存储与表示",
+      "question": "1KB的准确数值是______。",
+      "options": {
+        "A": "1024Bytes",
+        "B": "1000Bytes",
+        "C": "1024bits",
+        "D": "1000bits"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（1024Bytes）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 68,
+      "category": "信息的存储与表示",
+      "question": "在标准ASCII码表中，已知英文字母K的十六进制码值是4B，则二进制ASCII码1001000对应的字符是______。",
+      "options": {
+        "A": "G",
+        "B": "H",
+        "C": "I",
+        "D": "J"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（H）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 69,
+      "category": "信息的存储与表示",
+      "question": "20GB的硬盘表示容量约为______。",
+      "options": {
+        "A": "20亿个字节",
+        "B": "20亿个二进制位",
+        "C": "200亿个字节",
+        "D": "200亿个二进制位"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（200亿个字节）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 70,
+      "category": "信息的存储与表示",
+      "question": "在下列关于字符大小关系的说法中，正确的是______。",
+      "options": {
+        "A": "空格>a>A",
+        "B": "空格>A>a",
+        "C": "a>A>空格",
+        "D": "A>a>空格"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（a>A>空格）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 71,
+      "category": "信息的存储与表示",
+      "question": "十进制数121转换成无符号二进制整数是______。",
+      "options": {
+        "A": "1111001",
+        "B": "111001",
+        "C": "1001111",
+        "D": "100111"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（1111001）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 72,
+      "category": "信息的存储与表示",
+      "question": "下列不能用作存储容量单位的是______。",
+      "options": {
+        "A": "Byte",
+        "B": "GB",
+        "C": "MIPS",
+        "D": "KB"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（MIPS）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 73,
+      "category": "信息的存储与表示",
+      "question": "十进制数29转换成无符号二进制数等于______。",
+      "options": {
+        "A": "11111",
+        "B": "11101",
+        "C": "11001",
+        "D": "11011"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（11101）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 74,
+      "category": "信息的存储与表示",
+      "question": "在标准ASCII码表中，已知英文字母D的ASCII码是68，英文字母A的ASCII码是______。",
+      "options": {
+        "A": "64",
+        "B": "65",
+        "C": "96",
+        "D": "97"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（65）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 75,
+      "category": "信息的存储与表示",
+      "question": "十进制数32转换成无符号二进制整数是______。",
+      "options": {
+        "A": "100000",
+        "B": "100100",
+        "C": "100010",
+        "D": "101000"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（100000）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 76,
+      "category": "信息的存储与表示",
+      "question": "十进制数60转换成无符号二进制整数是______。",
+      "options": {
+        "A": "0111100",
+        "B": "0111010",
+        "C": "0111000",
+        "D": "0110110"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（0111100）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 77,
+      "category": "信息的存储与表示",
+      "question": "十进制数59转换成无符号二进制整数是______。",
+      "options": {
+        "A": "0111101",
+        "B": "0111011",
+        "C": "0110101",
+        "D": "0111111"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（0111011）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 78,
+      "category": "信息的存储与表示",
+      "question": "无符号二进制整数111111转换成十进制数是______。",
+      "options": {
+        "A": "71",
+        "B": "65",
+        "C": "63",
+        "D": "62"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（63）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 79,
+      "category": "信息的存储与表示",
+      "question": "一个字符的标准ASCII码的长度是______。",
+      "options": {
+        "A": "7 bits",
+        "B": "8 bits",
+        "C": "16 bits",
+        "D": "6 bits"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（7 bits）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 80,
+      "category": "信息的存储与表示",
+      "question": "在标准ASCII码表中，已知英文字母A的ASCII码是01000001，英文字母D的ASCII码是______。",
+      "options": {
+        "A": "01000011",
+        "B": "01000100",
+        "C": "01000101",
+        "D": "01000110"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（01000100）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 81,
+      "category": "信息的存储与表示",
+      "question": "在标准ASCII编码表中，数字码、小写英文字母和大写英文字母的前后次序是______。",
+      "options": {
+        "A": "数字、小写英文字母、大写英文字母",
+        "B": "小写英文字母、大写英文字母、数字",
+        "C": "数字、大写英文字母、小写英文字母",
+        "D": "大写英文字母、小写英文字母、数字"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（数字、大写英文字母、小写英文字母）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 82,
+      "category": "信息的存储与表示",
+      "question": "汉字的区位码由一汉字的区号和位号组成。其区号和位号的范围各为______。",
+      "options": {
+        "A": "区号 1-95 位号 1-95",
+        "B": "区号 1-94 位号 1-94",
+        "C": "区号 0-94 位号 0-94",
+        "D": "区号 0-95 位号 0-95"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（区号 1-94 位号 1-94）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 83,
+      "category": "信息的存储与表示",
+      "question": "五笔字型汉字输入法的编码属于______。",
+      "options": {
+        "A": "音码",
+        "B": "形声码",
+        "C": "区位码",
+        "D": "形码"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（形码）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 84,
+      "category": "信息的存储与表示",
+      "question": "显示或打印汉字时，系统使用的是汉字的______。",
+      "options": {
+        "A": "机内码",
+        "B": "字形码",
+        "C": "输入码",
+        "D": "国标交换码"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（字形码）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 85,
+      "category": "信息的存储与表示",
+      "question": "若已知一汉字的国标码是5E38H，则其内码是______。",
+      "options": {
+        "A": "DEB8H",
+        "B": "DE38H",
+        "C": "5EB8H",
+        "D": "7E58H"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（DEB8H）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 86,
+      "category": "信息的存储与表示",
+      "question": "在数制的转换中，下列叙述中正确的一条是______。",
+      "options": {
+        "A": "对于相同的十进制正整数，随着基数R的增大，转换结果的位数小于或等于原数据的位数",
+        "B": "对于相同的十进制正整数，随着基数R的增大，转换结果的位数大于或等于原数据的位数",
+        "C": "不同数制的数字符是各不相同的，没有一个数字符是一样的",
+        "D": "对于同一个整数值的二进制数表示的位数一定大于十进制数字的位数"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（对于相同的十进制正整数，随着基数R的增大，转换结果的位数小于或等于原数据的位数）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 87,
+      "category": "信息的存储与表示",
+      "question": "已知三个字符为：a、X和5，按它们的ASCII码值升序排序，结果是______。",
+      "options": {
+        "A": "5，a，X",
+        "B": "a，5，X",
+        "C": "X，a，5",
+        "D": "5，X，a"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（5，X，a）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 88,
+      "category": "信息的存储与表示",
+      "question": "在不同进制的四个数中，最小的一个数是______。",
+      "options": {
+        "A": "11011001（二进制）",
+        "B": "75（十进制）",
+        "C": "37（八进制）",
+        "D": "2A（十六进制）"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（37（八进制））。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 89,
+      "category": "信息的存储与表示",
+      "question": "用16×16点阵来表示汉字的字型，存储一个汉字的字形需用______个字节。",
+      "options": {
+        "A": "16×1",
+        "B": "16×2",
+        "C": "16×3",
+        "D": "16×4"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（16×2）。该题属于“信息的存储与表示”知识点。"
+    },
+    {
+      "id": 90,
+      "category": "多媒体技术简介",
+      "question": "对声音波形采样时，采样频率越高，声音文件的数据量______。",
+      "options": {
+        "A": "越小",
+        "B": "越大",
+        "C": "不变",
+        "D": "无法确定"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（越大）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 91,
+      "category": "多媒体技术简介",
+      "question": "以.jpg为扩展名的文件通常是______。",
+      "options": {
+        "A": "文本文件",
+        "B": "音频信号文件",
+        "C": "图像文件",
+        "D": "视频信号文件"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（图像文件）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 92,
+      "category": "多媒体技术简介",
+      "question": "实现音频信号数字化最核心的硬件电路是______。",
+      "options": {
+        "A": "A/D转换器",
+        "B": "D/A转换器",
+        "C": "数字编码器",
+        "D": "数字解码器"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（A/D转换器）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 93,
+      "category": "多媒体技术简介",
+      "question": "对一个图形来说，通常用位图格式文件存储与用矢量格式文件存储所占用的空间比较______。",
+      "options": {
+        "A": "更小",
+        "B": "更大",
+        "C": "相同",
+        "D": "无法确定"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（更大）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 94,
+      "category": "多媒体技术简介",
+      "question": "以.wav为扩展名的文件通常是______。",
+      "options": {
+        "A": "文本文件",
+        "B": "音频信号文件",
+        "C": "图像文件",
+        "D": "视频信号文件"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（音频信号文件）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 95,
+      "category": "多媒体技术简介",
+      "question": "以.txt为扩展名的文件通常是______。",
+      "options": {
+        "A": "文本文件",
+        "B": "音频信号文件",
+        "C": "图像文件",
+        "D": "视频信号文件"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（文本文件）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 96,
+      "category": "多媒体技术简介",
+      "question": "某800万像素的数码相机，拍摄照片的最高分辨率大约是______。",
+      "options": {
+        "A": "3200×2400",
+        "B": "2048×1600",
+        "C": "1600×1200",
+        "D": "1024×768"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（3200×2400）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 97,
+      "category": "多媒体技术简介",
+      "question": "若对音频信号以10kHz采样率、16位量化精度进行数字化，则每分钟的双声道数字化声音信号产生的数据量约为______。",
+      "options": {
+        "A": "1.2MB",
+        "B": "1.6MB",
+        "C": "2.4MB",
+        "D": "4.8MB"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（2.4MB）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 98,
+      "category": "多媒体技术简介",
+      "question": "一般说来，数字化声音的质量越高，则要求______。",
+      "options": {
+        "A": "量化位数越少、采样率越低",
+        "B": "量化位数越多、采样率越高",
+        "C": "量化位数越少、采样率越高",
+        "D": "量化位数越多、采样率越低"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（量化位数越多、采样率越高）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 99,
+      "category": "多媒体技术简介",
+      "question": "以.avi为扩展名的文件通常是______。",
+      "options": {
+        "A": "文本文件",
+        "B": "音频信号文件",
+        "C": "图像文件",
+        "D": "视频信号文件"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（视频信号文件）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 100,
+      "category": "多媒体技术简介",
+      "question": "数码相机里的照片可以利用计算机软件进行处理，计算机的这种应用属于______。",
+      "options": {
+        "A": "图像处理",
+        "B": "实时控制",
+        "C": "嵌入式系统",
+        "D": "辅助设计"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（图像处理）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 101,
+      "category": "多媒体技术简介",
+      "question": "声音与视频信息在计算机内的表现形式是______。",
+      "options": {
+        "A": "二进制数字",
+        "B": "调制",
+        "C": "模拟",
+        "D": "模拟或数字"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（二进制数字）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 102,
+      "category": "多媒体技术简介",
+      "question": "JPEG是一个用于数字信号压缩的国际标准，其压缩对象是______。",
+      "options": {
+        "A": "文本",
+        "B": "音频信号",
+        "C": "静态图像",
+        "D": "视频信号"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（静态图像）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 103,
+      "category": "多媒体技术简介",
+      "question": "目前有许多不同的音频文件格式，下列不是数字音频的文件格式的是______。",
+      "options": {
+        "A": "WAV",
+        "B": "GIF",
+        "C": "MP3",
+        "D": "MID"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（GIF）。该题属于“多媒体技术简介”知识点。"
+    },
+    {
+      "id": 104,
+      "category": "计算机病毒及其防治",
+      "question": "下列关于计算机病毒的说法中，正确的是_____。",
+      "options": {
+        "A": "计算机病毒是对计算机操作人员身体有害的生物病毒",
+        "B": "计算机病毒发作后,将造成计算机硬件永久性的物理损坏",
+        "C": "计算机病毒是一种通过自我复制进行传染的、破坏计算机程序和数据的小程序",
+        "D": "计算机病毒是一种有逻辑错误的程序"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（计算机病毒是一种通过自我复制进行传染的、破坏计算机程序和数据的小程序）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 105,
+      "category": "计算机病毒及其防治",
+      "question": "蠕虫病毒属于______。",
+      "options": {
+        "A": "宏病毒",
+        "B": "网络病毒",
+        "C": "混合型病毒",
+        "D": "文件型病毒"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（网络病毒）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 106,
+      "category": "计算机病毒及其防治",
+      "question": "下列关于计算机病毒的叙述中，错误的是______。",
+      "options": {
+        "A": "计算机病毒具有潜伏性",
+        "B": "计算机病毒具有传染性",
+        "C": "感染过计算机病毒的计算机具有对该病毒的免疫性",
+        "D": "计算机病毒是一个特殊的寄生程序"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（感染过计算机病毒的计算机具有对该病毒的免疫性）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 107,
+      "category": "计算机病毒及其防治",
+      "question": "计算机感染病毒的可能途径之一是______。",
+      "options": {
+        "A": "从键盘上输入数据",
+        "B": "随意运行外来的、未经消病毒软件严格审查的软盘上的软件",
+        "C": "所使用的软盘表面不清洁",
+        "D": "电源不稳定"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（随意运行外来的、未经消病毒软件严格审查的软盘上的软件）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 108,
+      "category": "计算机病毒及其防治",
+      "question": "下列叙述中，正确的是______。",
+      "options": {
+        "A": "计算机病毒只在可执行文件中传染，不执行的文件不会传染",
+        "B": "计算机病毒主要通过读/写移动存储器或Internet网络进行传播",
+        "C": "只要删除所有感染了病毒的文件就可以彻底消除病毒",
+        "D": "计算机杀病毒软件可以查出和清除任意已知的和未知的计算机病毒"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（计算机病毒主要通过读/写移动存储器或Internet网络进行传播）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 109,
+      "category": "计算机病毒及其防治",
+      "question": "下列关于计算机病毒的叙述中，正确的是______。",
+      "options": {
+        "A": "反病毒软件可以查、杀任何种类的病毒",
+        "B": "计算机病毒是一种被破坏了的程序",
+        "C": "反病毒软件必须随着新病毒的出现而升级，提高查、杀病毒的功能",
+        "D": "感染过计算机病毒的计算机具有对该病毒的免疫性"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（反病毒软件必须随着新病毒的出现而升级，提高查、杀病毒的功能）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 110,
+      "category": "计算机病毒及其防治",
+      "question": "下列叙述中，正确的是______。",
+      "options": {
+        "A": "计算机病毒是由于光盘表面不清洁而造成的",
+        "B": "计算机病毒主要通过读写移动存储器或Internet网络进行传播",
+        "C": "只要把带病毒的优盘设置成只读状态，那么此盘上的病毒就不会因读盘而传染给另一台计算机",
+        "D": "计算机病毒发作后,将造成计算机硬件永久性的物理损坏"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（计算机病毒主要通过读写移动存储器或Internet网络进行传播）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 111,
+      "category": "计算机病毒及其防治",
+      "question": "下列关于计算机病毒的叙述中，正确的是______。",
+      "options": {
+        "A": "所有计算机病毒只在可执行文件中传染",
+        "B": "计算机病毒可通过读写移动硬盘或Internet网络进行传播",
+        "C": "只要把带毒优盘设置成只读状态，那么此盘上的病毒就不会因读盘而传染给另一台计算机",
+        "D": "清除病毒的最简单的方法是删除已感染病毒的文件"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（计算机病毒可通过读写移动硬盘或Internet网络进行传播）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 112,
+      "category": "计算机病毒及其防治",
+      "question": "计算机病毒是指“能够侵入计算机系统并在计算机系统中潜伏、传播,破坏系统正常工作的一种具有繁殖能力的______。",
+      "options": {
+        "A": "流行性感冒病毒",
+        "B": "特殊小程序",
+        "C": "特殊微生物",
+        "D": "源程序"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（特殊小程序）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 113,
+      "category": "计算机病毒及其防治",
+      "question": "下列关于计算机病毒的叙述中，正确的是______。",
+      "options": {
+        "A": "计算机病毒只感染.exe或.com文件",
+        "B": "计算机病毒可通过读写移动存储设备或通过Internet网络进行传播",
+        "C": "计算机病毒是通过电网进行传播的",
+        "D": "计算机病毒是由于程序中的逻辑错误造成的"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（计算机病毒可通过读写移动存储设备或通过Internet网络进行传播）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 114,
+      "category": "计算机病毒及其防治",
+      "question": "下列关于计算机病毒的叙述中，正确的是______。",
+      "options": {
+        "A": "计算机病毒的特点之一是具有免疫性",
+        "B": "计算机病毒是一种有逻辑错误的小程序",
+        "C": "反病毒软件必须随着新病毒的出现而升级，提高查、杀病毒的功能",
+        "D": "感染过计算机病毒的计算机具有对该病毒的免疫性"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（反病毒软件必须随着新病毒的出现而升级，提高查、杀病毒的功能）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 115,
+      "category": "计算机病毒及其防治",
+      "question": "下列关于计算机病毒的叙述中，错误的是______。",
+      "options": {
+        "A": "反病毒软件可以查、杀任何种类的病毒",
+        "B": "计算机病毒是人为制造的、企图破坏计算机功能或计算机数据的一段小程序",
+        "C": "反病毒软件必须随着新病毒的出现而升级，提高查、杀病毒的功能",
+        "D": "计算机病毒具有传染性"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（反病毒软件可以查、杀任何种类的病毒）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 116,
+      "category": "计算机病毒及其防治",
+      "question": "当计算机病毒发作时，主要造成的破坏是______。",
+      "options": {
+        "A": "对磁盘片的物理损坏",
+        "B": "对磁盘驱动器的损坏",
+        "C": "对CPU的损坏",
+        "D": "对存储在硬盘上的程序、数据甚至系统的破坏"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（对存储在硬盘上的程序、数据甚至系统的破坏）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 117,
+      "category": "计算机病毒及其防治",
+      "question": "传播计算机病毒的一大可能途径是______。",
+      "options": {
+        "A": "通过键盘输入数据时传入",
+        "B": "通过电源线传播",
+        "C": "通过使用表面不清洁的光盘",
+        "D": "通过Internet网络传播"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（通过Internet网络传播）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 118,
+      "category": "计算机病毒及其防治",
+      "question": "为防止计算机病毒传染，应该做到______。",
+      "options": {
+        "A": "无病毒的U盘不要与来历不明的U盘放在一起",
+        "B": "不要复制来历不明U盘中的程序",
+        "C": "长时间不用的U盘要经常格式化",
+        "D": "U盘中不要存放可执行程序"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（不要复制来历不明U盘中的程序）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 119,
+      "category": "计算机病毒及其防治",
+      "question": "下列关于计算机病毒的描述，正确的是_____。",
+      "options": {
+        "A": "正版软件不会受到计算机病毒的攻击",
+        "B": "光盘上的软件不可能携带计算机病毒",
+        "C": "计算机病毒是一种特殊的计算机程序，因此数据文件中不可能携带病毒",
+        "D": "任何计算机病毒一定会有清除的办法"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（任何计算机病毒一定会有清除的办法）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 120,
+      "category": "计算机病毒及其防治",
+      "question": "计算机病毒的危害表现为______。",
+      "options": {
+        "A": "能造成计算机芯片的永久性失效",
+        "B": "使磁盘霉变",
+        "C": "影响程序运行，破坏计算机系统的数据与程序",
+        "D": "切断计算机系统电源"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（影响程序运行，破坏计算机系统的数据与程序）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 121,
+      "category": "计算机病毒及其防治",
+      "question": "计算机安全是指计算机资产安全，即______。",
+      "options": {
+        "A": "计算机信息系统资源不受自然有害因素的威胁和危害",
+        "B": "信息资源不受自然和人为有害因素的威胁和危害",
+        "C": "计算机硬件系统不受人为有害因素的威胁和危害",
+        "D": "计算机信息系统资源和信息资源不受自然和人为有害因素的威胁和危害"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（计算机信息系统资源和信息资源不受自然和人为有害因素的威胁和危害）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 122,
+      "category": "计算机病毒及其防治",
+      "question": "计算机病毒______。",
+      "options": {
+        "A": "不会对计算机操作人员造成身体损害",
+        "B": "会导致所有计算机操作人员感染致病",
+        "C": "会导致部分计算机操作人员感染致病",
+        "D": "会导致部分计算机操作人员感染病毒，但不会致病"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（不会对计算机操作人员造成身体损害）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 123,
+      "category": "计算机病毒及其防治",
+      "question": "通常所说的\"宏病毒\"感染的文件类型是______。",
+      "options": {
+        "A": "COM",
+        "B": "DOC",
+        "C": "EXE",
+        "D": "TXT"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（DOC）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 124,
+      "category": "计算机病毒及其防治",
+      "question": "下列选项属于“计算机安全设置”的是______。",
+      "options": {
+        "A": "定期备份重要数据",
+        "B": "不下载来路不明的软件及程序",
+        "C": "停掉Guest帐号",
+        "D": "安装杀（防）毒软件"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（停掉Guest帐号）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 125,
+      "category": "计算机病毒及其防治",
+      "question": "为了防止信息被别人窃取，可以设置开机密码，下列密码设置最安全的是______。",
+      "options": {
+        "A": "12345678",
+        "B": "nd@YZ@g1",
+        "C": "NDYZ",
+        "D": "Yingzhong"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（nd@YZ@g1）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 126,
+      "category": "计算机病毒及其防治",
+      "question": "下列关于计算机病毒的叙述中，正确的是______。",
+      "options": {
+        "A": "反病毒软件可以查、杀任何种类的病毒",
+        "B": "计算机病毒是一种被破坏了的程序",
+        "C": "反病毒软件必须随着新病毒的出现而升级，增强查、杀病毒的功能",
+        "D": "感染过计算机病毒的计算机具有对该病毒的免疫性"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（反病毒软件必须随着新病毒的出现而升级，增强查、杀病毒的功能）。该题属于“计算机病毒及其防治”知识点。"
+    },
+    {
+      "id": 127,
+      "category": "计算机的硬件系统",
+      "question": "组成计算机系统的两大部分是______。",
+      "options": {
+        "A": "硬件系统和软件系统",
+        "B": "主机和外部设备",
+        "C": "系统软件和应用软件",
+        "D": "输入设备和输出设备"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（硬件系统和软件系统）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 128,
+      "category": "计算机的硬件系统",
+      "question": "用MIPS衡量的计算机性能指标是______。",
+      "options": {
+        "A": "处理能力",
+        "B": "存储容量",
+        "C": "可靠性",
+        "D": "运算速度"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（运算速度）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 129,
+      "category": "计算机的硬件系统",
+      "question": "在外部设备中，扫描仪属于______。",
+      "options": {
+        "A": "输出设备",
+        "B": "存储设备",
+        "C": "输入设备",
+        "D": "特殊设备"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（输入设备）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 130,
+      "category": "计算机的硬件系统",
+      "question": "计算机的硬件主要包括：中央处理器（CPU）、存储器、输出设备和______。",
+      "options": {
+        "A": "键盘",
+        "B": "鼠标器",
+        "C": "显示器",
+        "D": "输入设备"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（输入设备）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 131,
+      "category": "计算机的硬件系统",
+      "question": "度量计算机运算速度常用的单位是______。",
+      "options": {
+        "A": "MIPS",
+        "B": "MHz",
+        "C": "MB/s",
+        "D": "Mbps"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（MIPS）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 132,
+      "category": "计算机的硬件系统",
+      "question": "微机硬件系统中最核心的部件是______。",
+      "options": {
+        "A": "内存储器",
+        "B": "输入输出设备",
+        "C": "CPU",
+        "D": "硬盘"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（CPU）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 133,
+      "category": "计算机的硬件系统",
+      "question": "组成计算机指令的两部分是______。",
+      "options": {
+        "A": "数据和字符",
+        "B": "操作码和地址码",
+        "C": "运算符和运算数",
+        "D": "运算符和运算结果"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（操作码和地址码）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 134,
+      "category": "计算机的硬件系统",
+      "question": "在下列设备中，不能作为微机输出设备的是______。",
+      "options": {
+        "A": "鼠标器",
+        "B": "打印机",
+        "C": "显示器",
+        "D": "绘图仪"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（鼠标器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 135,
+      "category": "计算机的硬件系统",
+      "question": "DVD-ROM属于______。",
+      "options": {
+        "A": "大容量可读可写外存储器",
+        "B": "大容量只读外部存储器",
+        "C": "CPU可直接存取的存储器",
+        "D": "只读内存储器"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（大容量只读外部存储器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 136,
+      "category": "计算机的硬件系统",
+      "question": "运算器的完整功能是进行______。",
+      "options": {
+        "A": "逻辑运算",
+        "B": "算术运算和逻辑运算",
+        "C": "算术运算",
+        "D": "逻辑运算和微积分运算"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（算术运算和逻辑运算）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 137,
+      "category": "计算机的硬件系统",
+      "question": "Pentium（奔腾）微机的字长是______。",
+      "options": {
+        "A": "8位",
+        "B": "16位",
+        "C": "32位",
+        "D": "64位"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（32位）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 138,
+      "category": "计算机的硬件系统",
+      "question": "ROM中的信息是______。",
+      "options": {
+        "A": "由计算机制造厂预先写入的",
+        "B": "在系统安装时写入的",
+        "C": "根据用户的需求，由用户随时写入的",
+        "D": "由程序临时存入的"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（由计算机制造厂预先写入的）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 139,
+      "category": "计算机的硬件系统",
+      "question": "在微机的配置中常看到\"P4 2.4G\"字样,其中数字\"2.4G\"表示______。",
+      "options": {
+        "A": "处理器的时钟频率是2.4 GHz",
+        "B": "处理器的运算速度是2.4 GIPS",
+        "C": "处理器是Pentium4第2.4代",
+        "D": "处理器与内存间的数据交换速率是2.4GB/S"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（处理器的时钟频率是2.4 GHz）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 140,
+      "category": "计算机的硬件系统",
+      "question": "下列关于CPU的叙述中，正确的是______。",
+      "options": {
+        "A": "CPU能直接读取硬盘上的数据",
+        "B": "CPU能直接与内存储器交换数据",
+        "C": "CPU主要组成部分是存储器和控制器",
+        "D": "CPU主要用来执行算术运算"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（CPU能直接与内存储器交换数据）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 141,
+      "category": "计算机的硬件系统",
+      "question": "配置Cache是为了解决______。",
+      "options": {
+        "A": "内存与外存之间速度不匹配问题",
+        "B": "CPU与外存之间速度不匹配问题",
+        "C": "CPU与内存之间速度不匹配问题",
+        "D": "主机与外部设备之间速度不匹配问题"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（CPU与内存之间速度不匹配问题）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 142,
+      "category": "计算机的硬件系统",
+      "question": "在微机的硬件设备中，有一种设备在程序设计中既可以当做输出设备，又可以当做输入设备，这种设备是 ______。",
+      "options": {
+        "A": "绘图仪",
+        "B": "网络摄像头",
+        "C": "手写笔",
+        "D": "磁盘驱动器"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（磁盘驱动器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 143,
+      "category": "计算机的硬件系统",
+      "question": "下列选项中，既可作为输入设备又可作为输出设备的是______。",
+      "options": {
+        "A": "扫描仪",
+        "B": "绘图仪",
+        "C": "鼠标器",
+        "D": "磁盘驱动器"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（磁盘驱动器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 144,
+      "category": "计算机的硬件系统",
+      "question": "对CD-ROM可以进行的操作是______。",
+      "options": {
+        "A": "读或写",
+        "B": "只能读不能写",
+        "C": "只能写不能读",
+        "D": "能存不能取"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（只能读不能写）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 145,
+      "category": "计算机的硬件系统",
+      "question": "通常打印质量最好的打印机是______。",
+      "options": {
+        "A": "针式打印机",
+        "B": "点阵打印机",
+        "C": "喷墨打印机",
+        "D": "激光打印机"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（激光打印机）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 146,
+      "category": "计算机的硬件系统",
+      "question": "字长是CPU的主要性能指标之一，它表示_______。",
+      "options": {
+        "A": "CPU一次能处理二进制数据的位数",
+        "B": "CPU最长的十进制整数的位数",
+        "C": "CPU最大的有效数字位数",
+        "D": "CPU计算结果的有效数字长度"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（CPU一次能处理二进制数据的位数）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 147,
+      "category": "计算机的硬件系统",
+      "question": "计算机的系统总线是计算机各部件间传递信息的公共通道，它分________。",
+      "options": {
+        "A": "数据总线和控制总线",
+        "B": "地址总线和数据总线",
+        "C": "数据总线、控制总线和地址总线",
+        "D": "地址总线和控制总线"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（数据总线、控制总线和地址总线）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 148,
+      "category": "计算机的硬件系统",
+      "question": "通常所说的计算机的主机是指______。",
+      "options": {
+        "A": "CPU和内存",
+        "B": "CPU和硬盘",
+        "C": "CPU、内存和硬盘",
+        "D": "CPU、内存与CD-ROM"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（CPU和内存）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 149,
+      "category": "计算机的硬件系统",
+      "question": "下列设备组中，完全属于计算机输出设备的一组是______。",
+      "options": {
+        "A": "喷墨打印机，显示器，键盘",
+        "B": "激光打印机，键盘，鼠标器",
+        "C": "键盘，鼠标器，扫描仪",
+        "D": "打印机，绘图仪，显示器"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（打印机，绘图仪，显示器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 150,
+      "category": "计算机的硬件系统",
+      "question": "把内存中数据传送到计算机的硬盘上去的操作称为______。",
+      "options": {
+        "A": "显示",
+        "B": "写盘",
+        "C": "输入",
+        "D": "读盘"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（写盘）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 151,
+      "category": "计算机的硬件系统",
+      "question": "控制器的功能是______。",
+      "options": {
+        "A": "指挥、协调计算机各相关硬件工作",
+        "B": "指挥、协调计算机各相关软件工作",
+        "C": "指挥、协调计算机各相关硬件和软件工作",
+        "D": "控制数据的输入和输出"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（指挥、协调计算机各相关硬件工作）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 152,
+      "category": "计算机的硬件系统",
+      "question": "下面关于优盘的描述中，错误的是______。",
+      "options": {
+        "A": "优盘有基本型、增强型和加密型三种",
+        "B": "优盘的特点是重量轻、体积小",
+        "C": "优盘多固定在机箱内，不便携带",
+        "D": "断电后，优盘还能保持存储的数据不丢失"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（优盘多固定在机箱内，不便携带）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 153,
+      "category": "计算机的硬件系统",
+      "question": "影响一台计算机性能的关键部件是______。",
+      "options": {
+        "A": "CD-ROM",
+        "B": "硬盘",
+        "C": "CPU",
+        "D": "显示器"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（CPU）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 154,
+      "category": "计算机的硬件系统",
+      "question": "组成计算机硬件系统的基本部分是______。",
+      "options": {
+        "A": "CPU、键盘和显示器",
+        "B": "主机和输入/出设备",
+        "C": "CPU和输入/出设备",
+        "D": "CPU、硬盘、键盘和显示器"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（主机和输入/出设备）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 155,
+      "category": "计算机的硬件系统",
+      "question": "CPU中，除了内部总线和必要的寄存器外，主要的两大部件分别是运算器和______。",
+      "options": {
+        "A": "控制器",
+        "B": "存储器",
+        "C": "Cache",
+        "D": "编辑器"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（控制器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 156,
+      "category": "计算机的硬件系统",
+      "question": "移动硬盘或优盘连接计算机所使用的接口通常是______。",
+      "options": {
+        "A": "RS-232C接口",
+        "B": "并行接口",
+        "C": "USB",
+        "D": "UBS"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（USB）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 157,
+      "category": "计算机的硬件系统",
+      "question": "假设某台式计算机的内存储器容量为256MB，硬盘容量为40GB。硬盘的容量是内存容量的______。",
+      "options": {
+        "A": "200倍",
+        "B": "160倍",
+        "C": "120倍",
+        "D": "100倍"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（160倍）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 158,
+      "category": "计算机的硬件系统",
+      "question": "下列度量单位中，用来度量计算机外部设备传输率的是______。",
+      "options": {
+        "A": "MB/s",
+        "B": "MIPS",
+        "C": "GHz",
+        "D": "MB"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（MB/s）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 159,
+      "category": "计算机的硬件系统",
+      "question": "把硬盘上的数据传送到计算机内存中去的操作称为______。",
+      "options": {
+        "A": "读盘",
+        "B": "写盘",
+        "C": "输出",
+        "D": "存盘"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（读盘）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 160,
+      "category": "计算机的硬件系统",
+      "question": "组成CPU的主要部件是______。",
+      "options": {
+        "A": "运算器和控制器",
+        "B": "运算器和存储器",
+        "C": "控制器和寄存器",
+        "D": "运算器和寄存器"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（运算器和控制器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 161,
+      "category": "计算机的硬件系统",
+      "question": "当前流行的Pentium 4 CPU的字长是______。",
+      "options": {
+        "A": "8bits",
+        "B": "16bits",
+        "C": "32bits",
+        "D": "64bits"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（32bits）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 162,
+      "category": "计算机的硬件系统",
+      "question": "下列说法中，错误的是______。",
+      "options": {
+        "A": "硬盘驱动器和盘片是密封在一起的，不能随意更换盘片",
+        "B": "硬盘可以是多张盘片组成的盘片组",
+        "C": "硬盘的技术指标除容量外，另一个是转速",
+        "D": "硬盘安装在机箱内，属于主机的组成部分"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（硬盘安装在机箱内，属于主机的组成部分）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 163,
+      "category": "计算机的硬件系统",
+      "question": "下列叙述中，错误的是______。",
+      "options": {
+        "A": "硬盘在主机箱内，它是主机的组成部分",
+        "B": "硬盘属于外部存储器",
+        "C": "硬盘驱动器既可做输入设备又可做输出设备用",
+        "D": "硬盘与CPU之间不能直接交换数据"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（硬盘在主机箱内，它是主机的组成部分）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 164,
+      "category": "计算机的硬件系统",
+      "question": "用来控制、指挥和协调计算机各部件工作的是______。",
+      "options": {
+        "A": "运算器",
+        "B": "鼠标器",
+        "C": "控制器",
+        "D": "存储器"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（控制器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 165,
+      "category": "计算机的硬件系统",
+      "question": "组成一个计算机系统的两大部分是______。",
+      "options": {
+        "A": "系统软件和应用软件",
+        "B": "硬件系统和软件系统",
+        "C": "主机和外部设备",
+        "D": "主机和输入/出设备"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（硬件系统和软件系统）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 166,
+      "category": "计算机的硬件系统",
+      "question": "一个完整的计算机系统的组成部分的确切提法应该是______。",
+      "options": {
+        "A": "计算机主机、键盘、显示器和软件",
+        "B": "计算机硬件和应用软件",
+        "C": "计算机硬件和系统软件",
+        "D": "计算机硬件和软件"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（计算机硬件和软件）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 167,
+      "category": "计算机的硬件系统",
+      "question": "硬盘属于______。",
+      "options": {
+        "A": "内部存储器",
+        "B": "外部存储器",
+        "C": "只读存储器",
+        "D": "输出设备"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（外部存储器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 168,
+      "category": "计算机的硬件系统",
+      "question": "下面关于USB的叙述中，错误的是______。",
+      "options": {
+        "A": "USB接口的尺寸比并行接口大得多",
+        "B": "USB2.0的数据传输率大大高于USB1.1",
+        "C": "USB具有热插拔与即插即用的功能",
+        "D": "在Windows XP下，使用USB接口连接的外部设备（如移动硬盘、U盘等）不需要驱动程序"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（USB接口的尺寸比并行接口大得多）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 169,
+      "category": "计算机的硬件系统",
+      "question": "下列选项中，不属于显示器主要技术指标的是______。",
+      "options": {
+        "A": "分辨率",
+        "B": "重量",
+        "C": "像素的点距",
+        "D": "显示器的尺寸"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（重量）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 170,
+      "category": "计算机的硬件系统",
+      "question": "下面关于随机存取存储器（RAM）的叙述中，正确的是______。",
+      "options": {
+        "A": "RAM分静态RAM（SRAM）和动态RAM（DRAM）两大类",
+        "B": "SRAM的集成度比DRAM高",
+        "C": "DRAM的存取速度比SRAM快",
+        "D": "DRAM中存储的数据无须\"刷新\""
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（RAM分静态RAM（SRAM）和动态RAM（DRAM）两大类）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 171,
+      "category": "计算机的硬件系统",
+      "question": "下列叙述中，正确的是______。",
+      "options": {
+        "A": "字长为16位表示这台计算机最大能计算一个16位的十进制数",
+        "B": "字长为16位表示这台计算机的CPU一次能处理16位二进制数",
+        "C": "运算器只能进行算术运算",
+        "D": "SRAM的集成度高于DRAM"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（字长为16位表示这台计算机的CPU一次能处理16位二进制数）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 172,
+      "category": "计算机的硬件系统",
+      "question": "下列设备组中，完全属于外部设备的一组是______。",
+      "options": {
+        "A": "激光打印机，移动硬盘，鼠标器",
+        "B": "CPU，键盘，显示器",
+        "C": "SRAM内存条，CD-ROM驱动器，扫描仪",
+        "D": "优盘，内存储器，硬盘"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（激光打印机，移动硬盘，鼠标器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 173,
+      "category": "计算机的硬件系统",
+      "question": "字长是CPU的主要技术性能指标之一，它表示的是______。",
+      "options": {
+        "A": "CPU的计算结果的有效数字长度",
+        "B": "CPU一次能处理二进制数据的位数",
+        "C": "CPU能表示的最大的有效数字位数",
+        "D": "CPU能表示的十进制整数的位数"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（CPU一次能处理二进制数据的位数）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 174,
+      "category": "计算机的硬件系统",
+      "question": "在计算机的硬件技术中，构成存储器的最小单位是______。",
+      "options": {
+        "A": "字节（Byte）",
+        "B": "二进制位（bit）",
+        "C": "字（Word）",
+        "D": "双字（Double Word）"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（二进制位（bit））。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 175,
+      "category": "计算机的硬件系统",
+      "question": "计算机技术中，英文缩写CPU的中文译名是______。",
+      "options": {
+        "A": "控制器",
+        "B": "运算器",
+        "C": "中央处理器",
+        "D": "寄存器"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（中央处理器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 176,
+      "category": "计算机的硬件系统",
+      "question": "下列叙述中，正确的是______。",
+      "options": {
+        "A": "CPU能直接读取硬盘上的数据",
+        "B": "CPU能直接存取内存储器上的数据",
+        "C": "CPU由存储器、运算器和控制器组成",
+        "D": "CPU主要用来存储程序和数据"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（CPU能直接存取内存储器上的数据）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 177,
+      "category": "计算机的硬件系统",
+      "question": "下列设备中，可以作为微机输入设备的是______。",
+      "options": {
+        "A": "打印机",
+        "B": "显示器",
+        "C": "鼠标器",
+        "D": "绘图仪"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（鼠标器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 178,
+      "category": "计算机的硬件系统",
+      "question": "显示器的主要技术指标之一是______。",
+      "options": {
+        "A": "分辨率",
+        "B": "亮度",
+        "C": "彩色",
+        "D": "对比度"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（分辨率）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 179,
+      "category": "计算机的硬件系统",
+      "question": "一个完整的计算机系统应该包括______。",
+      "options": {
+        "A": "主机、键盘和显示器",
+        "B": "硬件系统和软件系统",
+        "C": "主机和它的外部设备",
+        "D": "系统软件和应用软件"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（硬件系统和软件系统）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 180,
+      "category": "计算机的硬件系统",
+      "question": "用来存储当前正在运行的应用程序和其相应数据的存储器是______。",
+      "options": {
+        "A": "RAM",
+        "B": "硬盘",
+        "C": "ROM",
+        "D": "CD-ROM"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（RAM）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 181,
+      "category": "计算机的硬件系统",
+      "question": "运算器（ALU）的功能是______。",
+      "options": {
+        "A": "只能进行逻辑运算",
+        "B": "对数据进行算术运算或逻辑运算",
+        "C": "只能进行算术运算",
+        "D": "做初等函数的计算"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（对数据进行算术运算或逻辑运算）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 182,
+      "category": "计算机的硬件系统",
+      "question": "下列关于磁道的说法中，正确的是______。",
+      "options": {
+        "A": "盘面上的磁道是一组同心圆",
+        "B": "由于每一磁道的周长不同，所以每一磁道的存储容量也不同",
+        "C": "盘面上的磁道是一条阿基米德螺线",
+        "D": "磁道的编号是最内圈为0，并次序由内向外逐渐增大，最外圈的编号最大"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（盘面上的磁道是一组同心圆）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 183,
+      "category": "计算机的硬件系统",
+      "question": "下列设备组中，完全属于输入设备的一组是______。",
+      "options": {
+        "A": "CD-ROM驱动器，键盘，显示器",
+        "B": "绘图仪，键盘，鼠标器",
+        "C": "键盘，鼠标器，扫描仪",
+        "D": "打印机，硬盘，条码阅读器"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（键盘，鼠标器，扫描仪）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 184,
+      "category": "计算机的硬件系统",
+      "question": "下列设备组中，完全属于外部设备的一组是______。",
+      "options": {
+        "A": "CD-ROM驱动器，CPU，键盘，显示器",
+        "B": "激光打印机，键盘，CD-ROM驱动器，鼠标器",
+        "C": "主存储器，CD-ROM驱动器，扫描仪，显示器",
+        "D": "打印机，CPU，内存储器，硬盘"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（激光打印机，键盘，CD-ROM驱动器，鼠标器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 185,
+      "category": "计算机的硬件系统",
+      "question": "CPU主要技术性能指标有______。",
+      "options": {
+        "A": "字长、主频和运算速度",
+        "B": "可靠性和精度",
+        "C": "耗电量和效率",
+        "D": "冷却效率"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（字长、主频和运算速度）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 186,
+      "category": "计算机的硬件系统",
+      "question": "当电源关闭后，下列关于存储器的说法中，正确的是______。",
+      "options": {
+        "A": "存储在RAM中的数据不会丢失",
+        "B": "存储在ROM中的数据不会丢失",
+        "C": "存储在U盘中的数据会全部丢失",
+        "D": "存储在硬盘中的数据会丢失"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（存储在ROM中的数据不会丢失）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 187,
+      "category": "计算机的硬件系统",
+      "question": "下列度量单位中，用来度量CPU时钟主频的是______。",
+      "options": {
+        "A": "MB/s",
+        "B": "MIPS",
+        "C": "GHz",
+        "D": "MB"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（GHz）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 188,
+      "category": "计算机的硬件系统",
+      "question": "英文缩写ROM的中文名译名是______。",
+      "options": {
+        "A": "高速缓冲存储器",
+        "B": "只读存储器",
+        "C": "随机存取存储器",
+        "D": "优盘"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（只读存储器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 189,
+      "category": "计算机的硬件系统",
+      "question": "下面关于随机存取存储器（RAM）的叙述中，正确的是______。",
+      "options": {
+        "A": "存储在SRAM或DRAM中的数据在断电后将全部丢失且无法恢复",
+        "B": "SRAM的集成度比DRAM高",
+        "C": "DRAM的存取速度比SRAM快",
+        "D": "DRAM常用来做Cache用"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（存储在SRAM或DRAM中的数据在断电后将全部丢失且无法恢复）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 190,
+      "category": "计算机的硬件系统",
+      "question": "\"32位微机\"中的32位指的是______。",
+      "options": {
+        "A": "微机型号",
+        "B": "内存容量",
+        "C": "存储单位",
+        "D": "机器字长"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（机器字长）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 191,
+      "category": "计算机的硬件系统",
+      "question": "计算机内存中用于存储信息的部件是______。",
+      "options": {
+        "A": "U盘",
+        "B": "只读存储器",
+        "C": "硬盘",
+        "D": "RAM"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（RAM）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 192,
+      "category": "计算机的硬件系统",
+      "question": "下列叙述中，错误的是______。",
+      "options": {
+        "A": "硬磁盘可以与CPU之间直接交换数据",
+        "B": "硬磁盘在主机箱内，可以存放大量文件",
+        "C": "硬磁盘是外存储器之一",
+        "D": "硬磁盘的技术指标之一是每分钟的转速rpm"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（硬磁盘可以与CPU之间直接交换数据）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 193,
+      "category": "计算机的硬件系统",
+      "question": "在微机中，I/O设备是指______。",
+      "options": {
+        "A": "控制设备",
+        "B": "输入输出设备",
+        "C": "输入设备",
+        "D": "输出设备"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（输入输出设备）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 194,
+      "category": "计算机的硬件系统",
+      "question": "摄像头属于______。",
+      "options": {
+        "A": "控制设备",
+        "B": "存储设备",
+        "C": "输出设备",
+        "D": "输入设备"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（输入设备）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 195,
+      "category": "计算机的硬件系统",
+      "question": "移动硬盘与U盘相比，最大的优势是______。",
+      "options": {
+        "A": "容量大",
+        "B": "速度快",
+        "C": "安全性高",
+        "D": "兼容性好"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（容量大）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 196,
+      "category": "计算机的硬件系统",
+      "question": "目前使用的硬磁盘，在其读/写寻址过程中______。",
+      "options": {
+        "A": "盘片静止，磁头沿圆周方向旋转",
+        "B": "盘片旋转，磁头静止",
+        "C": "盘片旋转，磁头沿盘片径向运动",
+        "D": "盘片与磁头都静止不动"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（盘片旋转，磁头沿盘片径向运动）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 197,
+      "category": "计算机的硬件系统",
+      "question": "计算机主要技术指标通常是指______。",
+      "options": {
+        "A": "所配备的系统软件的版本",
+        "B": "CPU的时钟频率、运算速度、字长和存储容量",
+        "C": "扫描仪的分辨率、打印机的配置",
+        "D": "硬盘容量的大小"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（CPU的时钟频率、运算速度、字长和存储容量）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 198,
+      "category": "计算机的硬件系统",
+      "question": "在微机中，VGA属于______。",
+      "options": {
+        "A": "微机型号",
+        "B": "显示器型号",
+        "C": "显示标准",
+        "D": "打印机型号"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（显示标准）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 199,
+      "category": "计算机的硬件系统",
+      "question": "计算机的硬件主要包括：中央处理器、存储器、输出设备和______。",
+      "options": {
+        "A": "键盘",
+        "B": "鼠标",
+        "C": "输入设备",
+        "D": "显示器"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（输入设备）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 200,
+      "category": "计算机的硬件系统",
+      "question": "下列说法中正确的是______。",
+      "options": {
+        "A": "计算机体积越大，功能越强",
+        "B": "微机CPU主频越高，其运算速度越快",
+        "C": "两个显示器的屏幕大小相同，它们的分辨率也相同",
+        "D": "激光打印机打印的汉字比喷墨打印机多"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（微机CPU主频越高，其运算速度越快）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 201,
+      "category": "计算机的硬件系统",
+      "question": "微机的字长是4个字节，这意味着______。",
+      "options": {
+        "A": "能处理的最大数值为4位十进制数9999",
+        "B": "能处理的字符串最多由4个字符组成",
+        "C": "在CPU中作为一个整体加以传送处理的为32位二进制代码",
+        "D": "在CPU中运算的最大结果为2的32次方"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（在CPU中作为一个整体加以传送处理的为32位二进制代码）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 202,
+      "category": "计算机的硬件系统",
+      "question": "CPU的主要性能指标是______。",
+      "options": {
+        "A": "字长和时钟主频",
+        "B": "可靠性",
+        "C": "耗电量和效率",
+        "D": "发热量和冷却效率"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（字长和时钟主频）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 203,
+      "category": "计算机的硬件系统",
+      "question": "显示器的参数：1024×768，它表示______。",
+      "options": {
+        "A": "显示器分辨率",
+        "B": "显示器颜色指标",
+        "C": "显示器屏幕大小",
+        "D": "显示每个字符的列数和行数"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（显示器分辨率）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 204,
+      "category": "计算机的硬件系统",
+      "question": "下列说法正确的是______。",
+      "options": {
+        "A": "CPU可直接处理外存上的信息",
+        "B": "计算机可以直接执行高级语言编写的程序",
+        "C": "计算机可以直接执行机器语言编写的程序",
+        "D": "系统软件是买来的软件，应用软件是自己编写的软件"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（计算机可以直接执行机器语言编写的程序）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 205,
+      "category": "计算机的硬件系统",
+      "question": "微机内存按______。",
+      "options": {
+        "A": "二进制位编址",
+        "B": "十进制位编址",
+        "C": "字长编址",
+        "D": "字节编址"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（字节编址）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 206,
+      "category": "计算机的硬件系统",
+      "question": "ROM是指______。",
+      "options": {
+        "A": "随机存储器",
+        "B": "只读存储器",
+        "C": "外存储器",
+        "D": "辅助存储器"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（只读存储器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 207,
+      "category": "计算机的硬件系统",
+      "question": "下列描述中，正确的是______。",
+      "options": {
+        "A": "光盘驱动器属于主机，而光盘属于外设",
+        "B": "摄像头属于输入设备，而投影仪属于输出设备",
+        "C": "U盘即可以用作外存，也可以用作内存",
+        "D": "硬盘是辅助存储器，不属于外设"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（摄像头属于输入设备，而投影仪属于输出设备）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 208,
+      "category": "计算机的硬件系统",
+      "question": "10GB的硬盘表示其存储容量为______。",
+      "options": {
+        "A": "一万个字节",
+        "B": "一千万个字节",
+        "C": "一亿个字节",
+        "D": "一百亿个字节"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（一百亿个字节）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 209,
+      "category": "计算机的硬件系统",
+      "question": "显示器的分辨率为1024×768，若能同时显示256种颜色，则显示存储器的容量至少为______。",
+      "options": {
+        "A": "192KB",
+        "B": "384KB",
+        "C": "768KB",
+        "D": "1536KB"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（768KB）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 210,
+      "category": "计算机的硬件系统",
+      "question": "下列说法错误的是______。",
+      "options": {
+        "A": "计算机可以直接执行机器语言编写的程序",
+        "B": "光盘是一种存储介质",
+        "C": "操作系统是应用软件",
+        "D": "计算机速度用MIPS表示"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（操作系统是应用软件）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 211,
+      "category": "计算机的硬件系统",
+      "question": "下列叙述中，错误的是______。",
+      "options": {
+        "A": "计算机系统由硬件系统和软件系统组成",
+        "B": "计算机软件由各类应用软件组成",
+        "C": "CPU主要由运算器和控制器组成",
+        "D": "计算机主机由CPU和内存储器组成"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（计算机软件由各类应用软件组成）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 212,
+      "category": "计算机的硬件系统",
+      "question": "下列叙述中，错误的是______。",
+      "options": {
+        "A": "内存储器一般由ROM和RAM组成",
+        "B": "RAM中存储的数据一旦断电就全部丢失",
+        "C": "CPU不能访问内存储器",
+        "D": "存储在ROM中的数据断电后也不会丢失"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（CPU不能访问内存储器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 213,
+      "category": "计算机的硬件系统",
+      "question": "计算机有多种技术指标，其中主频是指______。",
+      "options": {
+        "A": "内存的时钟频率",
+        "B": "CPU内核工作的时钟频率",
+        "C": "系统时钟频率，也叫外频",
+        "D": "总线频率"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（CPU内核工作的时钟频率）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 214,
+      "category": "计算机的硬件系统",
+      "question": "除硬盘容量大小外，下列也属于硬盘技术指标的是______。",
+      "options": {
+        "A": "转速",
+        "B": "平均访问时间",
+        "C": "传输速率",
+        "D": "全部"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（全部）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 215,
+      "category": "计算机的硬件系统",
+      "question": "计算机字长是______。",
+      "options": {
+        "A": "处理器处理数据的宽度",
+        "B": "存储一个字符的位数",
+        "C": "屏幕一行显示字符的个数",
+        "D": "存储一个汉字的位数"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（处理器处理数据的宽度）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 216,
+      "category": "计算机的硬件系统",
+      "question": "造成计算机中存储数据丢失的原因主要是______。",
+      "options": {
+        "A": "病毒侵蚀、人为窃取",
+        "B": "计算机电磁辐射",
+        "C": "计算机存储器硬件损坏",
+        "D": "全部"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（全部）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 217,
+      "category": "计算机的硬件系统",
+      "question": "计算机的主频指的是______。",
+      "options": {
+        "A": "软盘读写速度，用Hz表示",
+        "B": "显示器输出速度，用MHz表示",
+        "C": "时钟频率，用MHz表示",
+        "D": "硬盘读写速度"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（时钟频率，用MHz表示）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 218,
+      "category": "计算机的硬件系统",
+      "question": "当电源关闭后，下列关于存储器的说法中，正确的是______。",
+      "options": {
+        "A": "存储在RAM中的数据不会丢失",
+        "B": "存储在ROM中的数据不会丢失",
+        "C": "存储在U盘中的数据会全部丢失",
+        "D": "存储在硬盘中的数据会丢失"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（存储在ROM中的数据不会丢失）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 219,
+      "category": "计算机的硬件系统",
+      "question": "计算机的技术性能指标主要是指______。",
+      "options": {
+        "A": "计算机所配备的程序设计语言、操作系统、外部设备",
+        "B": "计算机的可靠性、可维性和可用性",
+        "C": "显示器的分辨率、打印机的性能等配置",
+        "D": "字长、主频、运算速度、内/外存容量"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（字长、主频、运算速度、内/外存容量）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 220,
+      "category": "计算机的硬件系统",
+      "question": "下列叙述中，正确的是______。",
+      "options": {
+        "A": "内存中存放的只有程序代码",
+        "B": "内存中存放的只有数据",
+        "C": "内存中存放的既有程序代码又有数据",
+        "D": "外存中存放的是当前正在执行的程序代码和所需的数据"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（内存中存放的既有程序代码又有数据）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 221,
+      "category": "计算机的硬件系统",
+      "question": "随机存取存储器（RAM）的最大特点是______。",
+      "options": {
+        "A": "存储量极大，属于海量存储器",
+        "B": "存储在其中的信息可以永久保存",
+        "C": "一旦断电，存储在其上的信息将全部消失，且无法恢复",
+        "D": "计算机中，只是用来存储数据的"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（一旦断电，存储在其上的信息将全部消失，且无法恢复）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 222,
+      "category": "计算机的硬件系统",
+      "question": "下列各存储器中，存取速度最快的一种是______。",
+      "options": {
+        "A": "RAM",
+        "B": "光盘",
+        "C": "U盘",
+        "D": "硬盘"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（RAM）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 223,
+      "category": "计算机的硬件系统",
+      "question": "下列各存储器中，存取速度最快的一种是______。",
+      "options": {
+        "A": "U盘",
+        "B": "内存储器",
+        "C": "光盘",
+        "D": "固定硬盘"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（内存储器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 224,
+      "category": "计算机的硬件系统",
+      "question": "微机的销售广告中\"P4 2.4G/256M/80G\"中的2.4G是表示______。",
+      "options": {
+        "A": "CPU的运算速度为2.4GIPS",
+        "B": "CPU为Pentium 4的2.4代",
+        "C": "CPU的时钟主频为2.4GHz",
+        "D": "CPU与内存间的数据交换速率是2.4Gbps"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（CPU的时钟主频为2.4GHz）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 225,
+      "category": "计算机的硬件系统",
+      "question": "用来存储当前正在运行的应用程序及相应数据的存储器是______。",
+      "options": {
+        "A": "内存",
+        "B": "硬盘",
+        "C": "U盘",
+        "D": "CD-ROM"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（内存）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 226,
+      "category": "计算机的硬件系统",
+      "question": "在CD光盘上标记有\"CD-RW\"字样，\"RW\"标记表明该光盘是______。",
+      "options": {
+        "A": "只能写入一次，可以反复读出的一次性写入光盘",
+        "B": "可多次擦除型光盘",
+        "C": "只能读出，不能写入的只读光盘",
+        "D": "其驱动器单倍速为1350KB/S的高密度可读写光盘"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（可多次擦除型光盘）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 227,
+      "category": "计算机的硬件系统",
+      "question": "Cache的中文译名是______。",
+      "options": {
+        "A": "缓冲器",
+        "B": "只读存储器",
+        "C": "高速缓冲存储器",
+        "D": "可编程只读存储器"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（高速缓冲存储器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 228,
+      "category": "计算机的硬件系统",
+      "question": "\"32位微型计算机\"中的32，是指下列技术指标中的______。",
+      "options": {
+        "A": "CPU功耗",
+        "B": "CPU字长",
+        "C": "CPU主频",
+        "D": "CPU型号"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（CPU字长）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 229,
+      "category": "计算机的硬件系统",
+      "question": "计算机硬件系统主要包括：中央处理器(CPU)、存储器和______。",
+      "options": {
+        "A": "显示器和键盘",
+        "B": "打印机和键盘",
+        "C": "显示器和鼠标器",
+        "D": "输入/输出设备"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（输入/输出设备）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 230,
+      "category": "计算机的硬件系统",
+      "question": "液晶显示器(LCD)的主要技术指标不包括______。",
+      "options": {
+        "A": "显示分辨率",
+        "B": "显示速度",
+        "C": "亮度和对比度",
+        "D": "存储容量"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（存储容量）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 231,
+      "category": "计算机的硬件系统",
+      "question": "下列叙述中，错误的是______。",
+      "options": {
+        "A": "把数据从内存传输到硬盘的操作称为写盘",
+        "B": "Windows属于应用软件",
+        "C": "把高级语言编写的程序转换为机器语言的目标程序的过程叫编译",
+        "D": "计算机内部对数据的传输、存储和处理都使用二进制"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（Windows属于应用软件）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 232,
+      "category": "计算机的硬件系统",
+      "question": "组成微型机主机的部件是______。",
+      "options": {
+        "A": "内存和硬盘",
+        "B": "CPU、显示器和键盘",
+        "C": "CPU和内存",
+        "D": "CPU、内存、硬盘、显示器和键盘"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（CPU和内存）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 233,
+      "category": "计算机的硬件系统",
+      "question": "一个完整的计算机软件应包含______。",
+      "options": {
+        "A": "系统软件和应用软件",
+        "B": "编辑软件和应用软件",
+        "C": "数据库软件和工具软件",
+        "D": "程序、相应数据和文档"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（程序、相应数据和文档）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 234,
+      "category": "计算机的硬件系统",
+      "question": "UPS的中文译名是______。",
+      "options": {
+        "A": "稳压电源",
+        "B": "不间断电源",
+        "C": "高能电源",
+        "D": "调压电源"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（不间断电源）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 235,
+      "category": "计算机的硬件系统",
+      "question": "构成CPU的主要部件是______。",
+      "options": {
+        "A": "内存和控制器",
+        "B": "内存和运算器",
+        "C": "控制器和运算器",
+        "D": "内存、控制器和运算器"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（控制器和运算器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 236,
+      "category": "计算机的硬件系统",
+      "question": "一个完整的计算机系统应该包括______。",
+      "options": {
+        "A": "主机、键盘和显示器",
+        "B": "硬件系统和软件系统",
+        "C": "主机和它的外部设备",
+        "D": "系统软件和应用软件"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（硬件系统和软件系统）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 237,
+      "category": "计算机的硬件系统",
+      "question": "能直接与CPU交换信息的存储器是______。",
+      "options": {
+        "A": "硬盘存储器",
+        "B": "CD-ROM",
+        "C": "内存储器",
+        "D": "U盘存储器"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（内存储器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 238,
+      "category": "计算机的硬件系统",
+      "question": "计算机指令主要存放在______。",
+      "options": {
+        "A": "CPU",
+        "B": "内存",
+        "C": "硬盘",
+        "D": "键盘"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（内存）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 239,
+      "category": "计算机的硬件系统",
+      "question": "组成一个完整的计算机系统应该包括______。",
+      "options": {
+        "A": "主机、鼠标器、键盘和显示器",
+        "B": "系统软件和应用软件",
+        "C": "主机、显示器、键盘和音箱等外部设备",
+        "D": "硬件系统和软件系统"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（硬件系统和软件系统）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 240,
+      "category": "计算机的硬件系统",
+      "question": "CPU的中文名称是______。",
+      "options": {
+        "A": "控制器",
+        "B": "不间断电源",
+        "C": "算术逻辑部件",
+        "D": "中央处理器"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（中央处理器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 241,
+      "category": "计算机的硬件系统",
+      "question": "计算机中，负责指挥计算机各部分自动协调一致地进行工作的部件是______。",
+      "options": {
+        "A": "运算器",
+        "B": "控制器",
+        "C": "存储器",
+        "D": "总线"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（控制器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 242,
+      "category": "计算机的硬件系统",
+      "question": "构成CPU的主要部件是______。",
+      "options": {
+        "A": "内存和控制器",
+        "B": "内存、控制器和运算器",
+        "C": "高速缓存和运算器",
+        "D": "控制器和运算器"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（控制器和运算器）。该题属于“计算机的硬件系统”知识点。"
+    },
+    {
+      "id": 243,
+      "category": "计算机的软件系统",
+      "question": "汇编语言是一种______。",
+      "options": {
+        "A": "依赖于计算机的低级程序设计语言",
+        "B": "计算机能直接执行的程序设计语言",
+        "C": "独立于计算机的高级程序设计语言",
+        "D": "执行效率较低的程序设计语言"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（依赖于计算机的低级程序设计语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 244,
+      "category": "计算机的软件系统",
+      "question": "编译程序属于______。",
+      "options": {
+        "A": "系统软件",
+        "B": "应用软件",
+        "C": "操作系统",
+        "D": "数据库管理软件"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（系统软件）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 245,
+      "category": "计算机的软件系统",
+      "question": "计算机硬件能直接识别、执行的语言是______。",
+      "options": {
+        "A": "汇编语言",
+        "B": "机器语言",
+        "C": "高级程序语言",
+        "D": "C++语言"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（机器语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 246,
+      "category": "计算机的软件系统",
+      "question": "下列叙述中，正确的是______。",
+      "options": {
+        "A": "C++ 是一种高级程序设计语言",
+        "B": "用C++ 程序设计语言编写的程序可以无需经过编译就能直接在机器上运行",
+        "C": "汇编语言是一种低级程序设计语言，且执行效率很低",
+        "D": "机器语言和汇编语言是同一种语言的不同名称"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（C++ 是一种高级程序设计语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 247,
+      "category": "计算机的软件系统",
+      "question": "为了提高软件开发效率，开发软件时应尽量采用______。",
+      "options": {
+        "A": "汇编语言",
+        "B": "机器语言",
+        "C": "指令系统",
+        "D": "高级语言"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（高级语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 248,
+      "category": "计算机的软件系统",
+      "question": "下列叙述中，正确的是______。",
+      "options": {
+        "A": "用高级语言编写的程序称为源程序",
+        "B": "计算机能直接识别、执行用汇编语言编写的程序",
+        "C": "机器语言编写的程序执行效率最低",
+        "D": "不同型号的CPU具有相同的机器语言"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（用高级语言编写的程序称为源程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 249,
+      "category": "计算机的软件系统",
+      "question": "CPU的指令系统又称为______。",
+      "options": {
+        "A": "汇编语言",
+        "B": "机器语言",
+        "C": "程序设计语言",
+        "D": "符号语言"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（机器语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 250,
+      "category": "计算机的软件系统",
+      "question": "计算机指令由两部分组成，它们是______。",
+      "options": {
+        "A": "运算符和运算数",
+        "B": "操作数和结果",
+        "C": "操作码和操作数",
+        "D": "数据和字符"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（操作码和操作数）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 251,
+      "category": "计算机的软件系统",
+      "question": "下列软件中，属于应用软件的是______。",
+      "options": {
+        "A": "Windows XP",
+        "B": "PowerPoint 2003",
+        "C": "UNIX",
+        "D": "Linux"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（PowerPoint 2003）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 252,
+      "category": "计算机的软件系统",
+      "question": "计算机软件的确切含义是______。",
+      "options": {
+        "A": "计算机程序、数据与相应文档的总称",
+        "B": "系统软件与应用软件的总和",
+        "C": "操作系统、数据库管理软件与应用软件的总和",
+        "D": "各类应用软件的总称"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（计算机程序、数据与相应文档的总称）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 253,
+      "category": "计算机的软件系统",
+      "question": "用高级程序设计语言编写的程序______。",
+      "options": {
+        "A": "计算机能直接执行",
+        "B": "具有良好的可读性和可移植性",
+        "C": "执行效率高",
+        "D": "依赖于具体机器"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（具有良好的可读性和可移植性）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 254,
+      "category": "计算机的软件系统",
+      "question": "下列各类计算机程序语言中，不属于高级程序设计语言的是______。",
+      "options": {
+        "A": "Visual Basic语言",
+        "B": "C++ 语言",
+        "C": "FORTAN语言",
+        "D": "汇编语言"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（汇编语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 255,
+      "category": "计算机的软件系统",
+      "question": "把用高级程序设计语言编写的程序转换成等价的可执行程序，必须经过______。",
+      "options": {
+        "A": "汇编和解释",
+        "B": "编辑和链接",
+        "C": "编译和链接",
+        "D": "解释和编译"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（编译和链接）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 256,
+      "category": "计算机的软件系统",
+      "question": "下列各组软件中，属于应用软件的一组是______。",
+      "options": {
+        "A": "Windows XP和管理信息系统",
+        "B": "Unix和文字处理程序",
+        "C": "Linux和视频播放系统",
+        "D": "Office 2003和军事指挥程序"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（Office 2003和军事指挥程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 257,
+      "category": "计算机的软件系统",
+      "question": "下列叙述中，正确的是______。",
+      "options": {
+        "A": "高级语言编写的程序可移植性差",
+        "B": "机器语言就是汇编语言，无非是名称不同而已",
+        "C": "指令是由一串二进制数0、1组成的",
+        "D": "用机器语言编写的程序可读性好"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（指令是由一串二进制数0、1组成的）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 258,
+      "category": "计算机的软件系统",
+      "question": "把用高级程序设计语言编写的源程序翻译成目标程序（.OBJ）的程序称为______。",
+      "options": {
+        "A": "汇编程序",
+        "B": "编辑程序",
+        "C": "编译程序",
+        "D": "解释程序"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（编译程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 259,
+      "category": "计算机的软件系统",
+      "question": "下列软件中，属于系统软件的是______。",
+      "options": {
+        "A": "C++编译程序",
+        "B": "Excel 2003",
+        "C": "学籍管理系统",
+        "D": "财务管理系统"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（C++编译程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 260,
+      "category": "计算机的软件系统",
+      "question": "计算机系统软件中，最基本、最核心的软件是______。",
+      "options": {
+        "A": "操作系统",
+        "B": "数据库管理系统",
+        "C": "程序语言处理系统",
+        "D": "系统维护工具"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（操作系统）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 261,
+      "category": "计算机的软件系统",
+      "question": "下列各组软件中，全部属于应用软件的是______。",
+      "options": {
+        "A": "音频播放系统、语言编译系统、数据库管理系统",
+        "B": "文字处理程序、军事指挥程序、Unix",
+        "C": "导弹飞行系统、军事信息系统、航天信息系统",
+        "D": "Word 2010 、Photoshop 、 Windows 7"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（导弹飞行系统、军事信息系统、航天信息系统）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 262,
+      "category": "计算机的软件系统",
+      "question": "解释程序的功能是______。",
+      "options": {
+        "A": "解释执行汇编语言程序",
+        "B": "解释执行高级语言程序",
+        "C": "将汇编语言程序解释成目标程序",
+        "D": "将高级语言程序解释成目标程序"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（解释执行高级语言程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 263,
+      "category": "计算机的软件系统",
+      "question": "下列描述正确的是______。",
+      "options": {
+        "A": "计算机不能直接执行高级语言源程序，但可以直接执行汇编语言源程序",
+        "B": "高级语言与CPU型号无关，但汇编语言与CPU型号相关",
+        "C": "高级语言源程序不如汇编语言源程序的可读性好",
+        "D": "高级语言程序不如汇编语言程序的移植性好"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（高级语言与CPU型号无关，但汇编语言与CPU型号相关）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 264,
+      "category": "计算机的软件系统",
+      "question": "下列各组软件中，全部属于应用软件的是______。",
+      "options": {
+        "A": "视频播放系统、操作系统",
+        "B": "军事指挥程序、数据库管理系统",
+        "C": "导弹飞行控制系统、军事信息系统",
+        "D": "航天信息系统、语言处理程序"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（导弹飞行控制系统、军事信息系统）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 265,
+      "category": "计算机的软件系统",
+      "question": "在计算机指令中，规定其所执行操作功能的部分称为______。",
+      "options": {
+        "A": "地址码",
+        "B": "源操作数",
+        "C": "操作数",
+        "D": "操作码"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（操作码）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 266,
+      "category": "计算机的软件系统",
+      "question": "下列各软件中，不是系统软件的是______。",
+      "options": {
+        "A": "操作系统",
+        "B": "语言处理系统",
+        "C": "指挥信息系统",
+        "D": "数据库管理系统"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（指挥信息系统）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 267,
+      "category": "计算机的软件系统",
+      "question": "下列关于指令系统的描述，正确的是______。",
+      "options": {
+        "A": "指令由操作码和控制码两部分组成",
+        "B": "指令的地址码部分可能是操作数，也可能是操作数的内存单元地址",
+        "C": "指令的地址码部分是不可缺少的",
+        "D": "指令的操作码部分描述了完成指令所需要的操作数类型"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（指令的地址码部分可能是操作数，也可能是操作数的内存单元地址）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 268,
+      "category": "计算机的软件系统",
+      "question": "下列软件中，属于系统软件的是______。",
+      "options": {
+        "A": "航天信息系统",
+        "B": "Office 2003",
+        "C": "Windows Vista",
+        "D": "决策支持系统"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（Windows Vista）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 269,
+      "category": "计算机的软件系统",
+      "question": "下列叙述中，正确的是______。",
+      "options": {
+        "A": "用高级语言编写的程序可移植性好",
+        "B": "用高级语言编写的程序运行效率最高",
+        "C": "机器语言编写的程序执行效率最低",
+        "D": "高级语言编写的程序的可读性最差"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（用高级语言编写的程序可移植性好）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 270,
+      "category": "计算机的软件系统",
+      "question": "面向对象的程序设计语言是一种______。",
+      "options": {
+        "A": "依赖于计算机的低级程序设计语言",
+        "B": "计算机能直接执行的程序设计语言",
+        "C": "可移植性较好的高级程序设计语言",
+        "D": "执行效率较高的程序设计语言"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（可移植性较好的高级程序设计语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 271,
+      "category": "计算机的软件系统",
+      "question": "在各类程序设计语言中，相比较而言，执行效率最高的是______。",
+      "options": {
+        "A": "高级语言编写的程序",
+        "B": "汇编语言编写的程序",
+        "C": "机器语言编写的程序",
+        "D": "面向对象的语言编写的程序"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（机器语言编写的程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 272,
+      "category": "计算机的软件系统",
+      "question": "以下语言本身不能作为网页开发语言的是______。",
+      "options": {
+        "A": "C++",
+        "B": "ASP",
+        "C": "JSP",
+        "D": "HTML"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（C++）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 273,
+      "category": "计算机的软件系统",
+      "question": "下列各项中两个软件均属于系统软件的是______。",
+      "options": {
+        "A": "MIS和UNIX",
+        "B": "WPS和UNIX",
+        "C": "DOS和UNIX",
+        "D": "MIS和WPS"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（DOS和UNIX）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 274,
+      "category": "计算机的软件系统",
+      "question": "编译程序将高级语言程序翻译成与之等价的机器语言程序，该机器语言程序称为______。",
+      "options": {
+        "A": "工作程序",
+        "B": "机器程序",
+        "C": "临时程序",
+        "D": "目标程序"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（目标程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 275,
+      "category": "计算机的软件系统",
+      "question": "以下名称是手机中的常用软件，属于系统软件的是______。",
+      "options": {
+        "A": "手机QQ",
+        "B": "android",
+        "C": "Skype",
+        "D": "微信"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（android）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 276,
+      "category": "计算机的软件系统",
+      "question": "与高级语言相比，汇编语言编写的程序通常______。",
+      "options": {
+        "A": "执行效率更高",
+        "B": "更短",
+        "C": "可读性更好",
+        "D": "移植性更好"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（执行效率更高）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 277,
+      "category": "计算机的软件系统",
+      "question": "用助记符代替操作码、地址符号代替操作数的面向机器的语言是______。",
+      "options": {
+        "A": "汇编语言",
+        "B": "FORTRAN语言",
+        "C": "机器语言",
+        "D": "高级语言"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（汇编语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 278,
+      "category": "计算机的软件系统",
+      "question": "将目标程序（.OBJ）转换成可执行文件（.EXE）的程序称为______。",
+      "options": {
+        "A": "编辑程序",
+        "B": "编译程序",
+        "C": "链接程序",
+        "D": "汇编程序"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（链接程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 279,
+      "category": "计算机的软件系统",
+      "question": "关于汇编语言程序______。",
+      "options": {
+        "A": "相对于高级程序设计语言程序具有良好的可移植性",
+        "B": "相对于高级程序设计语言程序具有良好的可读性",
+        "C": "相对于机器语言程序具有良好的可移植性",
+        "D": "相对于机器语言程序具有较高的执行效率"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（相对于机器语言程序具有良好的可移植性）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 280,
+      "category": "计算机的软件系统",
+      "question": "下列属于计算机程序设计语言的是______。",
+      "options": {
+        "A": "ACDSee",
+        "B": "Visual Basic",
+        "C": "Wave Edit",
+        "D": "WinZip"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（Visual Basic）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 281,
+      "category": "计算机的软件系统",
+      "question": "下列选项属于面向对象的程序设计语言是______。",
+      "options": {
+        "A": "Java和C",
+        "B": "Java和C++",
+        "C": "VB和C",
+        "D": "VB和Word"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（Java和C++）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 282,
+      "category": "计算机的软件系统",
+      "question": "高级程序设计语言的特点是______。",
+      "options": {
+        "A": "高级语言数据结构丰富",
+        "B": "高级语言与具体的机器结构密切相关",
+        "C": "高级语言接近算法语言不易掌握",
+        "D": "用高级语言编写的程序计算机可立即执行"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（高级语言数据结构丰富）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 283,
+      "category": "计算机的软件系统",
+      "question": "下列说法错误的是______。",
+      "options": {
+        "A": "汇编语言是一种依赖于计算机的低级程序设计语言",
+        "B": "计算机可以直接执行机器语言程序",
+        "C": "高级语言通常都具有执行效率高的特点",
+        "D": "为提高开发效率，开发软件时应尽量采用高级语言"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（高级语言通常都具有执行效率高的特点）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 284,
+      "category": "计算机的软件系统",
+      "question": "以下程序设计语言是低级语言的是______。",
+      "options": {
+        "A": "FORTRAN语言",
+        "B": "JAVA语言",
+        "C": "Visual Basic语言",
+        "D": "80X86汇编语言"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（80X86汇编语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 285,
+      "category": "计算机的软件系统",
+      "question": "早期的计算机语言中，所有的指令、数据都用一串二进制数0和1表示，这种语言称为______。",
+      "options": {
+        "A": "Basic语言",
+        "B": "机器语言",
+        "C": "汇编语言",
+        "D": "java语言"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（机器语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 286,
+      "category": "计算机的软件系统",
+      "question": "下列说法正确的是______。",
+      "options": {
+        "A": "与汇编译方式执行程序相比，解释方式执行程序的效率更高",
+        "B": "与汇编语言相比，高级语言程序的执行效率更高",
+        "C": "与机器语言相比，汇编语言的可读性更差",
+        "D": "其它三项都不对"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（其它三项都不对）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 287,
+      "category": "计算机的软件系统",
+      "question": "将汇编源程序翻译成目标程序（.OBJ）的程序称为______。",
+      "options": {
+        "A": "编辑程序",
+        "B": "编译程序",
+        "C": "链接程序",
+        "D": "汇编程序"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（汇编程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 288,
+      "category": "计算机的软件系统",
+      "question": "面向对象的程序设计语言是______。",
+      "options": {
+        "A": "汇编语言",
+        "B": "机器语言",
+        "C": "高级程序语言",
+        "D": "形式语言"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（高级程序语言）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 289,
+      "category": "计算机的软件系统",
+      "question": "下列各组软件中，全部属于应用软件的是______。",
+      "options": {
+        "A": "程序语言处理程序、数据库管理系统、财务处理软件",
+        "B": "文字处理程序、编辑程序、Unix操作系统",
+        "C": "管理信息系统、办公自动化系统、电子商务软件",
+        "D": "Word 2010 、WindowsXP、指挥信息系统"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（管理信息系统、办公自动化系统、电子商务软件）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 290,
+      "category": "计算机的软件系统",
+      "question": "以下关于编译程序的说法正确的是______。",
+      "options": {
+        "A": "编译程序直接生成可执行文件",
+        "B": "编译程序直接执行源程序",
+        "C": "编译程序完成高级语言程序到低级语言程序的等价翻译",
+        "D": "各种编译程序构造都比较复杂，所以执行效率高"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（编译程序完成高级语言程序到低级语言程序的等价翻译）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 291,
+      "category": "计算机的软件系统",
+      "question": "下列软件中，属于应用软件的是______。",
+      "options": {
+        "A": "操作系统",
+        "B": "数据库管理系统",
+        "C": "程序设计语言处理系统",
+        "D": "管理信息系统"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（管理信息系统）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 292,
+      "category": "计算机的软件系统",
+      "question": "用C语言编写的程序被称为______。",
+      "options": {
+        "A": "可执行程序",
+        "B": "源程序",
+        "C": "目标程序",
+        "D": "编译程序"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（源程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 293,
+      "category": "计算机的软件系统",
+      "question": "下列说法正确的是______。",
+      "options": {
+        "A": "编译程序的功能是将高级语言源程序编译成目标程序",
+        "B": "解释程序的功能是解释执行汇编语言程序",
+        "C": "Intel8086指令不能在Intel P4上执行",
+        "D": "C++语言和Basic语言都是高级语言，因此他们的执行效率相同"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（编译程序的功能是将高级语言源程序编译成目标程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 294,
+      "category": "计算机的软件系统",
+      "question": "下列软件中，属于系统软件的是______。",
+      "options": {
+        "A": "办公自动化软件",
+        "B": "Windows XP",
+        "C": "管理信息系统",
+        "D": "指挥信息系统"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（Windows XP）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 295,
+      "category": "计算机的软件系统",
+      "question": "下列说法中，正确的是______。",
+      "options": {
+        "A": "只要将高级程序语言编写的源程序文件（如try.c）的扩展名更改为.exe，则它就成为可执行文件了",
+        "B": "高档计算机可以直接执行用高级程序语言编写的程序",
+        "C": "高级语言源程序只有经过编译和链接后才能成为可执行程序",
+        "D": "用高级程序语言编写的程序可移植性和可读性都很差"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（高级语言源程序只有经过编译和链接后才能成为可执行程序）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 296,
+      "category": "计算机的软件系统",
+      "question": "计算机系统软件中最核心的是______。",
+      "options": {
+        "A": "程序语言处理系统",
+        "B": "操作系统",
+        "C": "数据库管理系统",
+        "D": "诊断程序"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（操作系统）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 297,
+      "category": "计算机的软件系统",
+      "question": "以下名称是手机中的常用软件，属于系统软件的是______。",
+      "options": {
+        "A": "手机QQ",
+        "B": "android",
+        "C": "Skype",
+        "D": "微信"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（android）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 298,
+      "category": "计算机的软件系统",
+      "question": "以下关于编译程序的说法正确的是______。",
+      "options": {
+        "A": "编译程序属于计算机应用软件，所有用户都需要编译程序",
+        "B": "编译程序不会生成目标程序，而是直接执行源程序",
+        "C": "编译程序完成高级语言程序到低级语言程序的等价翻译",
+        "D": "编译程序构造比较复杂，一般不进行出错处理"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（编译程序完成高级语言程序到低级语言程序的等价翻译）。该题属于“计算机的软件系统”知识点。"
+    },
+    {
+      "id": 299,
+      "category": "操作系统",
+      "question": "操作系统的主要功能是______。",
+      "options": {
+        "A": "对用户的数据文件进行管理，为用户提供管理文件方便",
+        "B": "对计算机的所有资源进行统一控制和管理，为用户使用计算机提供方便",
+        "C": "对源程序进行编译和运行",
+        "D": "对汇编语言程序进行翻译"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（对计算机的所有资源进行统一控制和管理，为用户使用计算机提供方便）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 300,
+      "category": "操作系统",
+      "question": "在所列出的：1、字处理软件，2、Linux，3、Unix，4、学籍管理系统，5、Windows XP和6、Office 2003等六个软件中，属于系统软件的有______。",
+      "options": {
+        "A": "1，2，3",
+        "B": "2，3，5",
+        "C": "1，2，3，5",
+        "D": "全部都不是"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（2，3，5）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 301,
+      "category": "操作系统",
+      "question": "操作系统中的文件管理系统为用户提供的功能是______。",
+      "options": {
+        "A": "按文件作者存取文件",
+        "B": "按文件名管理文件",
+        "C": "按文件创建日期存取文件",
+        "D": "按文件大小存取文件"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（按文件名管理文件）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 302,
+      "category": "操作系统",
+      "question": "下列选项中，完整描述计算机操作系统作用的是______。",
+      "options": {
+        "A": "它是用户与计算机的界面",
+        "B": "它对用户存储的文件进行管理，方便用户",
+        "C": "它执行用户键入的各类命令",
+        "D": "它管理计算机系统的全部软、硬件资源，合理组织计算机的工作流程，以达到充分发挥计算机资源的效率，为用户提供使用计算机的友好界面"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（它管理计算机系统的全部软、硬件资源，合理组织计算机的工作流程，以达到充分发挥计算机资源的效率，为用户提供使用计算机的友好界面）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 303,
+      "category": "操作系统",
+      "question": "下列软件中，不是操作系统的是______。",
+      "options": {
+        "A": "Linux",
+        "B": "UNIX",
+        "C": "MS DOS",
+        "D": "MS Office"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（MS Office）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 304,
+      "category": "操作系统",
+      "question": "操作系统将CPU的时间资源划分成极短的时间片，轮流分配给各终端用户，使终端用户单独分享CPU的时间片，有独占计算机的感觉，这种操作系统称为______。",
+      "options": {
+        "A": "实时操作系统",
+        "B": "批处理操作系统",
+        "C": "分时操作系统",
+        "D": "分布式操作系统"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（分时操作系统）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 305,
+      "category": "操作系统",
+      "question": "微机上广泛使用的Windows是______。",
+      "options": {
+        "A": "多任务操作系统",
+        "B": "单任务操作系统",
+        "C": "实时操作系统",
+        "D": "批处理操作系统"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（多任务操作系统）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 306,
+      "category": "操作系统",
+      "question": "下面关于操作系统的叙述中，正确的是______。",
+      "options": {
+        "A": "操作系统是计算机软件系统中的核心软件",
+        "B": "操作系统属于应用软件",
+        "C": "Windows是PC机唯一的操作系统",
+        "D": "操作系统的五大功能是：启动、打印、显示、文件存取和关机"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（操作系统是计算机软件系统中的核心软件）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 307,
+      "category": "操作系统",
+      "question": "计算机操作系统通常具有的五大功能是______。",
+      "options": {
+        "A": "CPU管理、显示器管理、键盘管理、打印机管理和鼠标器管理",
+        "B": "硬盘管理、U盘管理、CPU的管理、显示器管理和键盘管理",
+        "C": "处理器（CPU）管理、存储管理、文件管理、设备管理和作业管理",
+        "D": "启动、打印、显示、文件存取和关机"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（处理器（CPU）管理、存储管理、文件管理、设备管理和作业管理）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 308,
+      "category": "操作系统",
+      "question": "操作系统管理用户数据的单位是______。",
+      "options": {
+        "A": "扇区",
+        "B": "文件",
+        "C": "磁道",
+        "D": "文件夹"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（文件）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 309,
+      "category": "操作系统",
+      "question": "操作系统是计算机的软件系统中______。",
+      "options": {
+        "A": "最常用的应用软件",
+        "B": "最核心的系统软件",
+        "C": "最通用的专用软件",
+        "D": "最流行的通用软件"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（最核心的系统软件）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 310,
+      "category": "操作系统",
+      "question": "操作系统是______。",
+      "options": {
+        "A": "主机与外设的接口",
+        "B": "用户与计算机的接口",
+        "C": "系统软件与应用软件的接口",
+        "D": "高级语言与汇编语言的接口"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（用户与计算机的接口）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 311,
+      "category": "操作系统",
+      "question": "下列关于操作系统的描述，正确的是______。",
+      "options": {
+        "A": "操作系统中只有程序没有数据",
+        "B": "操作系统提供的人机交互接口其它软件无法使用",
+        "C": "操作系统是一种最重要的应用软件",
+        "D": "一台计算机可以安装多个操作系统"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（一台计算机可以安装多个操作系统）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 312,
+      "category": "操作系统",
+      "question": "下列说法正确的是______。",
+      "options": {
+        "A": "进程是一段程序",
+        "B": "进程是一段程序的执行过程",
+        "C": "线程是一段子程序",
+        "D": "线程是多个进程的执行过程"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（进程是一段程序的执行过程）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 313,
+      "category": "操作系统",
+      "question": "按操作系统的分类，UNIX操作系统是______。",
+      "options": {
+        "A": "批处理操作系统",
+        "B": "实时操作系统",
+        "C": "分时操作系统",
+        "D": "单用户操作系统"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（分时操作系统）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 314,
+      "category": "操作系统",
+      "question": "下列说法正确的是______。",
+      "options": {
+        "A": "一个进程会伴随着其程序执行的结束而消亡",
+        "B": "一段程序会伴随着其进程结束而消亡",
+        "C": "任何进程在执行未结束时不允许被强行终止",
+        "D": "任何进程在执行未结束时都可以被强行终止"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（一个进程会伴随着其程序执行的结束而消亡）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 315,
+      "category": "操作系统",
+      "question": "操作系统的作用是______。",
+      "options": {
+        "A": "用户操作规范",
+        "B": "管理计算机硬件系统",
+        "C": "管理计算机软件系统",
+        "D": "管理计算机系统的所有资源"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（管理计算机系统的所有资源）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 316,
+      "category": "操作系统",
+      "question": "计算机操作系统的最基本特征是______。",
+      "options": {
+        "A": "并发和共享",
+        "B": "共享和虚拟",
+        "C": "虚拟和异步",
+        "D": "异步和并发"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（并发和共享）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 317,
+      "category": "操作系统",
+      "question": "计算机操作系统的主要功能是______。",
+      "options": {
+        "A": "管理计算机系统的软硬件资源，以充分发挥计算机资源的效率，并为其它软件提供良好的运行环境",
+        "B": "把高级程序设计语言和汇编语言编写的程序翻译到计算机硬件可以直接执行的目标程序，为用户提供良好的软件开发环境",
+        "C": "对各类计算机文件进行有效的管理，并提交计算机硬件高效处理",
+        "D": "为用户提供方便地操作和使用计算机"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（管理计算机系统的软硬件资源，以充分发挥计算机资源的效率，并为其它软件提供良好的运行环境）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 318,
+      "category": "操作系统",
+      "question": "Windows是计算机系统中的______。",
+      "options": {
+        "A": "主要硬件",
+        "B": "系统软件",
+        "C": "工具软件",
+        "D": "应用软件"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（系统软件）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 319,
+      "category": "操作系统",
+      "question": "微机上广泛使用的Windows Xp是______。",
+      "options": {
+        "A": "多用户多任务操作系统",
+        "B": "单用户多任务操作系统",
+        "C": "实时操作系统",
+        "D": "多用户分时操作系统"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（单用户多任务操作系统）。该题属于“操作系统”知识点。"
+    },
+    {
+      "id": 320,
+      "category": "计算机网络基本概念",
+      "question": "调制解调器（Modem）的功能是______。",
+      "options": {
+        "A": "将计算机的数字信号转换成模拟信号",
+        "B": "将模拟信号转换成计算机的数字信号",
+        "C": "将数字信号与模拟信号互相转换",
+        "D": "为了上网与接电话两不误"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（将数字信号与模拟信号互相转换）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 321,
+      "category": "计算机网络基本概念",
+      "question": "若要将计算机与局域网连接，至少需要具有的硬件是 ______。",
+      "options": {
+        "A": "集线器",
+        "B": "网关",
+        "C": "网卡",
+        "D": "路由器"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（网卡）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 322,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络分为局域网、城域网和广域网，下列属于局域网的是______。",
+      "options": {
+        "A": "ChinaDDN网",
+        "B": "Novell网",
+        "C": "Chinanet网",
+        "D": "Internet"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（Novell网）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 323,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络最突出的优点是______。",
+      "options": {
+        "A": "精度高",
+        "B": "运算速度快",
+        "C": "容量大",
+        "D": "共享资源"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（共享资源）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 324,
+      "category": "计算机网络基本概念",
+      "question": "TCP协议的主要功能是______。",
+      "options": {
+        "A": "对数据进行分组",
+        "B": "确保数据的可靠传输",
+        "C": "确定数据传输路径",
+        "D": "提高数据传输速度"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（确保数据的可靠传输）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 325,
+      "category": "计算机网络基本概念",
+      "question": "下列度量单位中，用来度量计算机网络数据传输速率（比特率）的是______。",
+      "options": {
+        "A": "MB/s",
+        "B": "MIPS",
+        "C": "GHz",
+        "D": "Mbps"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（Mbps）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 326,
+      "category": "计算机网络基本概念",
+      "question": "调制解调器（Modem）的主要技术指标是数据传输速率，它的度量单位是______。",
+      "options": {
+        "A": "MIPS",
+        "B": "Mbps",
+        "C": "dpi",
+        "D": "KB"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（Mbps）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 327,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络最突出的优点是______。",
+      "options": {
+        "A": "资源共享和快速传输信息",
+        "B": "高精度计算和收发邮件",
+        "C": "运算速度快和快速传输信息",
+        "D": "存储容量大和高精度"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（资源共享和快速传输信息）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 328,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络的主要目标是实现______。",
+      "options": {
+        "A": "数据处理和网络游戏",
+        "B": "文献检索和网上聊天",
+        "C": "快速通信和资源共享",
+        "D": "共享文件和收发邮件"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（快速通信和资源共享）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 329,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络中常用的传输介质中传输速率最快的是______。",
+      "options": {
+        "A": "双绞线",
+        "B": "光纤",
+        "C": "同轴电缆",
+        "D": "电话线"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（光纤）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 330,
+      "category": "计算机网络基本概念",
+      "question": "以太网的拓扑结构是______。",
+      "options": {
+        "A": "星型",
+        "B": "总线型",
+        "C": "环型",
+        "D": "树型"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（总线型）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 331,
+      "category": "计算机网络基本概念",
+      "question": "局域网中，提供并管理共享资源的计算机称为______。",
+      "options": {
+        "A": "网桥",
+        "B": "网关",
+        "C": "服务器",
+        "D": "工作站"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（服务器）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 332,
+      "category": "计算机网络基本概念",
+      "question": "若网络的各个节点均连接到同一条通信线路上，且线路两端有防止信号反射的装置，这种拓扑结构称为______。",
+      "options": {
+        "A": "总线型拓扑",
+        "B": "星型拓扑",
+        "C": "树型拓扑",
+        "D": "环型拓扑"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（总线型拓扑）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 333,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络中常用的有线传输介质有______。",
+      "options": {
+        "A": "双绞线，红外线，同轴电缆",
+        "B": "激光，光纤，同轴电缆",
+        "C": "双绞线，光纤，同轴电缆",
+        "D": "光纤，同轴电缆，微波"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（双绞线，光纤，同轴电缆）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 334,
+      "category": "计算机网络基本概念",
+      "question": "若网络的各个节点通过中继器连接成一个闭合环路，则称这种拓扑结构为______。",
+      "options": {
+        "A": "总线型拓扑",
+        "B": "星型拓扑",
+        "C": "树型拓扑",
+        "D": "环型拓扑"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（环型拓扑）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 335,
+      "category": "计算机网络基本概念",
+      "question": "局域网硬件中主要包括工作站、网络适配器、传输介质和______。",
+      "options": {
+        "A": "Modem",
+        "B": "交换机",
+        "C": "打印机",
+        "D": "中继站"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（交换机）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 336,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络中传输介质传输速率的单位是bps，其含义是______。",
+      "options": {
+        "A": "字节/秒",
+        "B": "字/秒",
+        "C": "字段/秒",
+        "D": "二进制位/秒"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（二进制位/秒）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 337,
+      "category": "计算机网络基本概念",
+      "question": "Internet是目前世界上第一大互联网，它起源于美国，其雏形是______。",
+      "options": {
+        "A": "CERNET网",
+        "B": "NCPC网",
+        "C": "ARPANET网",
+        "D": "GBNKT"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（ARPANET网）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 338,
+      "category": "计算机网络基本概念",
+      "question": "从网上下载软件时，使用的网络服务类型是______。",
+      "options": {
+        "A": "文件传输",
+        "B": "远程登陆",
+        "C": "信息浏览",
+        "D": "电子邮件"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（文件传输）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 339,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络是计算机技术和______。",
+      "options": {
+        "A": "自动化技术的结合",
+        "B": "通信技术的结合",
+        "C": "电缆等传输技术的结合",
+        "D": "信息技术的结合"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（通信技术的结合）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 340,
+      "category": "计算机网络基本概念",
+      "question": "能够利用无线移动网络上网的是______。",
+      "options": {
+        "A": "内置无线网卡的笔记本电脑",
+        "B": "部分具有上网功能的手机",
+        "C": "部分具有上网功能的平板电脑",
+        "D": "全部"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（全部）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 341,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络中，若所有的计算机都连接到一个中心节点上，当一个网络节点需要传输数据时，首先传输到中心节点上，然后由中心节点转发到目的节点，这种连接结构称为______。",
+      "options": {
+        "A": "总线结构",
+        "B": "环型结构",
+        "C": "星型结构",
+        "D": "网状结构"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（星型结构）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 342,
+      "category": "计算机网络基本概念",
+      "question": "通信技术主要是用于扩展人的______。",
+      "options": {
+        "A": "处理信息功能",
+        "B": "传递信息功能",
+        "C": "收集信息功能",
+        "D": "信息的控制与使用功能"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（传递信息功能）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 343,
+      "category": "计算机网络基本概念",
+      "question": "广域网中采用的交换技术大多是______。",
+      "options": {
+        "A": "电路交换",
+        "B": "报文交换",
+        "C": "分组交换",
+        "D": "自定义交换"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（分组交换）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 344,
+      "category": "计算机网络基本概念",
+      "question": "关于因特网防火墙，下列叙述中错误的是______。",
+      "options": {
+        "A": "为单位内部网络提供了安全边界",
+        "B": "防止外界入侵单位内部网络",
+        "C": "可以阻止来自内部的威胁与攻击",
+        "D": "可以使用过滤技术在网络层对数据进行选择"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（可以阻止来自内部的威胁与攻击）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 345,
+      "category": "计算机网络基本概念",
+      "question": "无线移动网络最突出的优点是______。",
+      "options": {
+        "A": "资源共享和快速传输信息",
+        "B": "提供随时随地的网络服务",
+        "C": "文献检索和网上聊天",
+        "D": "共享文件和收发邮件"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（提供随时随地的网络服务）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 346,
+      "category": "计算机网络基本概念",
+      "question": "\"千兆以太网\"通常是一种高速局域网，其网络数据传输速率大约为______。",
+      "options": {
+        "A": "1000000位/秒",
+        "B": "1000000000位/秒",
+        "C": "1000000字节/秒",
+        "D": "1000000000字节/秒"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（1000000000位/秒）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 347,
+      "category": "计算机网络基本概念",
+      "question": "防火墙是指______。",
+      "options": {
+        "A": "一个特定软件",
+        "B": "一个特定硬件",
+        "C": "执行访问控制策略的一组系统",
+        "D": "一批硬件的总称"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（执行访问控制策略的一组系统）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 348,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络是一个______。",
+      "options": {
+        "A": "管理信息系统",
+        "B": "编译系统",
+        "C": "在协议控制下的多机互联系统",
+        "D": "网上购物系统"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（在协议控制下的多机互联系统）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 349,
+      "category": "计算机网络基本概念",
+      "question": "以下上网方式中采用无线网络传输技术的是______。",
+      "options": {
+        "A": "ADSL",
+        "B": "WiFi",
+        "C": "拨号接入",
+        "D": "全部都是"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（WiFi）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 350,
+      "category": "计算机网络基本概念",
+      "question": "IPv4地址和IPv6地址的位数分别为______。",
+      "options": {
+        "A": "4，6",
+        "B": "8，16",
+        "C": "16，24",
+        "D": "32，128"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（32，128）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 351,
+      "category": "计算机网络基本概念",
+      "question": "以下有关光纤通信的说法中错误的是______。",
+      "options": {
+        "A": "光纤通信是利用光导纤维传导光信号来进行通信的",
+        "B": "光纤通信具有通信容量大、保密性强和传输距离长等优点",
+        "C": "光纤线路的损耗大，所以每隔1～2公里距离就需要中继器",
+        "D": "光纤通信常用波分多路复用技术提高通信容量"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（光纤线路的损耗大，所以每隔1～2公里距离就需要中继器）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 352,
+      "category": "计算机网络基本概念",
+      "question": "主要用于实现两个不同网络互联的设备是______。",
+      "options": {
+        "A": "转发器",
+        "B": "集线器",
+        "C": "路由器",
+        "D": "调制解调器"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（路由器）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 353,
+      "category": "计算机网络基本概念",
+      "question": "防火墙用于将Internet和内部网络隔离，因此它是______。",
+      "options": {
+        "A": "防止Internet火灾的硬件设施",
+        "B": "抗电磁干扰的硬件设施",
+        "C": "保护网线不受破坏的软件和硬件设施",
+        "D": "网络安全和信息安全的软件和硬件设施"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（网络安全和信息安全的软件和硬件设施）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 354,
+      "category": "计算机网络基本概念",
+      "question": "在下列网络的传输介质中，抗干扰能力最好的一个是______。",
+      "options": {
+        "A": "光缆",
+        "B": "同轴电缆",
+        "C": "双绞线",
+        "D": "电话线"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（光缆）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 355,
+      "category": "计算机网络基本概念",
+      "question": "按照网络的拓扑结构划分以太网（Ethernet)属于______。",
+      "options": {
+        "A": "总线型网络结构",
+        "B": "树型网络结构",
+        "C": "星型网络结构",
+        "D": "环形网络结构"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（总线型网络结构）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 356,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络的目标是实现______。",
+      "options": {
+        "A": "数据处理和网上聊天",
+        "B": "文献检索和收发邮件",
+        "C": "资源共享和信息传输",
+        "D": "信息传输和网络游戏"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（资源共享和信息传输）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 357,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络的目标是实现______。",
+      "options": {
+        "A": "数据处理",
+        "B": "文献检索",
+        "C": "资源共享和信息传输",
+        "D": "信息传输"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（资源共享和信息传输）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 358,
+      "category": "计算机网络基本概念",
+      "question": "调制解调器(MODEM)的主要功能是______。",
+      "options": {
+        "A": "模拟信号的放大",
+        "B": "数字信号的放大",
+        "C": "数字信号的编码",
+        "D": "模拟信号与数字信号之间的相互转换"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（模拟信号与数字信号之间的相互转换）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 359,
+      "category": "计算机网络基本概念",
+      "question": "计算机网络最突出的优点是______。",
+      "options": {
+        "A": "提高可靠性",
+        "B": "提高计算机的存储容量",
+        "C": "运算速度快",
+        "D": "实现资源共享和快速通信"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（实现资源共享和快速通信）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 360,
+      "category": "计算机网络基本概念",
+      "question": "在因特网技术中，缩写ISP的中文全名是______。",
+      "options": {
+        "A": "因特网服务提供商",
+        "B": "因特网服务产品",
+        "C": "因特网服务协议",
+        "D": "因特网服务程序"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（因特网服务提供商）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 361,
+      "category": "计算机网络基本概念",
+      "question": "在计算机网络中，英文缩写WAN的中文名是 。",
+      "options": {
+        "A": "局域网",
+        "B": "无线网",
+        "C": "广域网",
+        "D": "城域网"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（广域网）。该题属于“计算机网络基本概念”知识点。"
+    },
+    {
+      "id": 362,
+      "category": "因特网基础",
+      "question": "拥有计算机并以拨号方式接入Internet网的用户需要使用______。",
+      "options": {
+        "A": "CD-ROM",
+        "B": "鼠标",
+        "C": "U盘",
+        "D": "Modem"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（Modem）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 363,
+      "category": "因特网基础",
+      "question": "Internet实现了分布在世界各地的各类网络的互联，其最基础和核心的协议是______。",
+      "options": {
+        "A": "HTTP",
+        "B": "FTP",
+        "C": "HTML",
+        "D": "TCP/IP"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（TCP/IP）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 364,
+      "category": "因特网基础",
+      "question": "随着Internet的发展，越来越多的计算机感染病毒的可能途径之一是______。",
+      "options": {
+        "A": "从键盘上输入数据",
+        "B": "通过电源线",
+        "C": "所使用的光盘表面不清洁",
+        "D": "通过Internet的E-mail，附着在电子邮件的信息中"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（通过Internet的E-mail，附着在电子邮件的信息中）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 365,
+      "category": "因特网基础",
+      "question": "有一域名为bit.edu.cn，根据域名代码的规定，此域名表示______。",
+      "options": {
+        "A": "教育机构",
+        "B": "商业组织",
+        "C": "军事部门",
+        "D": "政府机关"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（教育机构）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 366,
+      "category": "因特网基础",
+      "question": "下列各项中，非法的Internet的IP地址是______。",
+      "options": {
+        "A": "202.96.12.14",
+        "B": "202.196.72.140",
+        "C": "112.256.23.8",
+        "D": "201.124.38.79"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（112.256.23.8）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 367,
+      "category": "因特网基础",
+      "question": "正确的IP地址是______。",
+      "options": {
+        "A": "202.112.111.1",
+        "B": "202.2.2.2.2",
+        "C": "202.202.1",
+        "D": "202.257.14.13"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（202.112.111.1）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 368,
+      "category": "因特网基础",
+      "question": "域名MH.BIT.EDU.CN中主机名是______。",
+      "options": {
+        "A": "MH",
+        "B": "EDU",
+        "C": "CN",
+        "D": "BIT"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（MH）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 369,
+      "category": "因特网基础",
+      "question": "在因特网上，一台计算机可以作为另一台主机的远程终端，使用该主机的资源，该项服务称为______。",
+      "options": {
+        "A": "Telnet",
+        "B": "BBS",
+        "C": "FTP",
+        "D": "WWW"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（Telnet）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 370,
+      "category": "因特网基础",
+      "question": "根据域名代码规定，表示政府部门网站的域名代码是______。",
+      "options": {
+        "A": ".net",
+        "B": ".com",
+        "C": ".gov",
+        "D": ".org"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（.gov）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 371,
+      "category": "因特网基础",
+      "question": "用\"综合业务数字网\"（又称\"一线通\"）接入因特网的优点是上网通话两不误，它的英文缩写是______。",
+      "options": {
+        "A": "ADSL",
+        "B": "ISDN",
+        "C": "ISP",
+        "D": "TCP"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（ISDN）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 372,
+      "category": "因特网基础",
+      "question": "Internet网中不同网络和不同计算机相互通讯的协议是______。",
+      "options": {
+        "A": "ATM",
+        "B": "TCP/IP",
+        "C": "Novell",
+        "D": "X.25"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（TCP/IP）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 373,
+      "category": "因特网基础",
+      "question": "能保存网页地址的文件夹是______。",
+      "options": {
+        "A": "收件箱",
+        "B": "公文包",
+        "C": "我的文档",
+        "D": "收藏夹"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（收藏夹）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 374,
+      "category": "因特网基础",
+      "question": "Internet提供的最常用、便捷的通讯服务是______。",
+      "options": {
+        "A": "文件传输（FTP）",
+        "B": "远程登录（Telnet）",
+        "C": "电子邮件（E-mail）",
+        "D": "万维网（WWW）"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（电子邮件（E-mail））。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 375,
+      "category": "因特网基础",
+      "question": "Modem是计算机通过电话线接入Internet时所必需的硬件，它的功能是______。",
+      "options": {
+        "A": "只将数字信号转换为模拟信号",
+        "B": "只将模拟信号转换为数字信号",
+        "C": "为了在上网的同时能打电话",
+        "D": "将模拟信号和数字信号互相转换"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（将模拟信号和数字信号互相转换）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 376,
+      "category": "因特网基础",
+      "question": "上网需要在计算机上安装______。",
+      "options": {
+        "A": "数据库管理软件",
+        "B": "视频播放软件",
+        "C": "浏览器软件",
+        "D": "网络游戏软件"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（浏览器软件）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 377,
+      "category": "因特网基础",
+      "question": "通常网络用户使用的电子邮箱建在______。",
+      "options": {
+        "A": "用户的计算机上",
+        "B": "发件人的计算机上",
+        "C": "ISP的邮件服务器上",
+        "D": "收件人的计算机上"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（ISP的邮件服务器上）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 378,
+      "category": "因特网基础",
+      "question": "因特网中IP地址用四组十进制数表示，每组数字的取值范围是______。",
+      "options": {
+        "A": "0～127",
+        "B": "0～128",
+        "C": "0～255",
+        "D": "0～256"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（0～255）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 379,
+      "category": "因特网基础",
+      "question": "Internet最初创建时的应用领域是______。",
+      "options": {
+        "A": "经济",
+        "B": "军事",
+        "C": "教育",
+        "D": "外交"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（军事）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 380,
+      "category": "因特网基础",
+      "question": "Http是______。",
+      "options": {
+        "A": "网址",
+        "B": "域名",
+        "C": "高级语言",
+        "D": "超文本传输协议"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（超文本传输协议）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 381,
+      "category": "因特网基础",
+      "question": "电子商务的本质是______。",
+      "options": {
+        "A": "计算机技术",
+        "B": "电子技术",
+        "C": "商务活动",
+        "D": "网络技术"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（商务活动）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 382,
+      "category": "因特网基础",
+      "question": "FTP是因特网中______。",
+      "options": {
+        "A": "用于传送文件的一种服务",
+        "B": "发送电子邮件的软件",
+        "C": "浏览网页的工具",
+        "D": "一种聊天工具"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（用于传送文件的一种服务）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 383,
+      "category": "因特网基础",
+      "question": "在Internet上浏览时，浏览器和WWW服务器之间传输网页使用的协议是______。",
+      "options": {
+        "A": "Http",
+        "B": "IP",
+        "C": "Ftp",
+        "D": "Smtp"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（Http）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 384,
+      "category": "因特网基础",
+      "question": "下列各选项中，不属于Internet应用的是______。",
+      "options": {
+        "A": "新闻组",
+        "B": "远程登录",
+        "C": "网络协议",
+        "D": "搜索引擎"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（网络协议）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 385,
+      "category": "因特网基础",
+      "question": "要在Web浏览器中查看某一电子商务公司的主页，应知道______。",
+      "options": {
+        "A": "该公司的电子邮件地址",
+        "B": "该公司法人的电子邮箱",
+        "C": "该公司的WWW地址",
+        "D": "该公司法人的QQ号"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（该公司的WWW地址）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 386,
+      "category": "因特网基础",
+      "question": "一般而言，Internet环境中的防火墙建立在______。",
+      "options": {
+        "A": "每个子网的内部",
+        "B": "内部子网之间",
+        "C": "内部网络与外部网络的交叉点",
+        "D": "其它3个都不对"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（内部网络与外部网络的交叉点）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 387,
+      "category": "因特网基础",
+      "question": "Internet中，用于实现域名和IP地址转换的是______。",
+      "options": {
+        "A": "SMTP",
+        "B": "DNS",
+        "C": "Ftp",
+        "D": "Http"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（DNS）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 388,
+      "category": "因特网基础",
+      "question": "下列关于域名的说法正确的是______。",
+      "options": {
+        "A": "域名就是IP地址",
+        "B": "域名的使用对象仅限于服务器",
+        "C": "域名完全由用户自行定义",
+        "D": "域名系统按地理域或机构域分层、采用层次结构"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（域名系统按地理域或机构域分层、采用层次结构）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 389,
+      "category": "因特网基础",
+      "question": "域名ABC.XYZ.COM.CN中主机名是______。",
+      "options": {
+        "A": "ABC",
+        "B": "XYZ",
+        "C": "COM",
+        "D": "CN"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（ABC）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 390,
+      "category": "因特网基础",
+      "question": "目前广泛使用的Internet，其前身可追溯到______。",
+      "options": {
+        "A": "ARPANET",
+        "B": "CHINANET",
+        "C": "DECnet",
+        "D": "NOVELL"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（ARPANET）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 391,
+      "category": "因特网基础",
+      "question": "根据Internet的域名代码规定，域名中的______表示商业组织的网站。",
+      "options": {
+        "A": ".net",
+        "B": ".com",
+        "C": ".gov",
+        "D": ".org"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（.com）。该题属于“因特网基础”知识点。"
+    },
+    {
+      "id": 392,
+      "category": "使用简单的因特网应用",
+      "question": "下列关于电子邮件的说法，正确的是______。",
+      "options": {
+        "A": "收件人必须有E-mail地址，发件人可以没有E-mail地址",
+        "B": "发件人必须有E-mail地址，收件人可以没有E-mail地址",
+        "C": "发件人和收件人都必须有E-mail地址",
+        "D": "发件人必须知道收件人的邮政编码"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（发件人和收件人都必须有E-mail地址）。该题属于“使用简单的因特网应用”知识点。"
+    },
+    {
+      "id": 393,
+      "category": "使用简单的因特网应用",
+      "question": "以下关于电子邮件的说法，不正确的是______。",
+      "options": {
+        "A": "电子邮件的英文简称是E-mail",
+        "B": "加入因特网的每个用户通过申请都可以得到一个\"电子信箱\"",
+        "C": "在一台计算机上申请的\"电子信箱\"，以后只有通过这台计算机上网才能收信",
+        "D": "一个人可以申请多个电子信箱"
+      },
+      "answer": "C",
+      "explanation": "正确答案是 C（在一台计算机上申请的\"电子信箱\"，以后只有通过这台计算机上网才能收信）。该题属于“使用简单的因特网应用”知识点。"
+    },
+    {
+      "id": 394,
+      "category": "使用简单的因特网应用",
+      "question": "用户名为XUEJY的正确电子邮件地址是______。",
+      "options": {
+        "A": "XUEJY @ bj163.com",
+        "B": "XUEJY&bj163.com",
+        "C": "XUEJY#bj163.com",
+        "D": "XUEJY@bj163.com"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（XUEJY@bj163.com）。该题属于“使用简单的因特网应用”知识点。"
+    },
+    {
+      "id": 395,
+      "category": "使用简单的因特网应用",
+      "question": "下列关于电子邮件的叙述中，正确的是______。",
+      "options": {
+        "A": "如果收件人的计算机没有打开时，发件人发来的电子邮件将丢失",
+        "B": "如果收件人的计算机没有打开时，发件人发来的电子邮件将退回",
+        "C": "如果收件人的计算机没有打开时，当收件人的计算机打开时再重发",
+        "D": "发件人发来的电子邮件保存在收件人的电子邮箱中，收件人可随时接收"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（发件人发来的电子邮件保存在收件人的电子邮箱中，收件人可随时接收）。该题属于“使用简单的因特网应用”知识点。"
+    },
+    {
+      "id": 396,
+      "category": "使用简单的因特网应用",
+      "question": "写邮件时，除了发件人地址之外，另一项必须要填写的是______。",
+      "options": {
+        "A": "信件内容",
+        "B": "收件人地址",
+        "C": "主题",
+        "D": "抄送"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（收件人地址）。该题属于“使用简单的因特网应用”知识点。"
+    },
+    {
+      "id": 397,
+      "category": "使用简单的因特网应用",
+      "question": "接入因特网的每台主机都有一个唯一可识别的地址，称为______。",
+      "options": {
+        "A": "TCP地址",
+        "B": "IP地址",
+        "C": "TCP/IP地址",
+        "D": "URL"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（IP地址）。该题属于“使用简单的因特网应用”知识点。"
+    },
+    {
+      "id": 398,
+      "category": "使用简单的因特网应用",
+      "question": "假设邮件服务器的地址是email.bj163.com，则用户的正确的电子邮箱地址的格式是______。",
+      "options": {
+        "A": "用户名#email.bj163.com",
+        "B": "用户名@email.bj163.com",
+        "C": "用户名&email.bj163.com",
+        "D": "用户名$email.bj163.com"
+      },
+      "answer": "B",
+      "explanation": "正确答案是 B（用户名@email.bj163.com）。该题属于“使用简单的因特网应用”知识点。"
+    },
+    {
+      "id": 399,
+      "category": "使用简单的因特网应用",
+      "question": "为实现以ADSL方式接入Internet，至少需要在计算机中内置或外置的一个关键硬设备是______。",
+      "options": {
+        "A": "网卡",
+        "B": "集线器",
+        "C": "服务器",
+        "D": "调制解调器（Modem）"
+      },
+      "answer": "D",
+      "explanation": "正确答案是 D（调制解调器（Modem））。该题属于“使用简单的因特网应用”知识点。"
+    },
+    {
+      "id": 400,
+      "category": "使用简单的因特网应用",
+      "question": "下列各项中，正确的电子邮箱地址是______。",
+      "options": {
+        "A": "L202@sina.com",
+        "B": "TT202#yahoo.com",
+        "C": "A112.256.23.8",
+        "D": "K201&yahoo.com.cn"
+      },
+      "answer": "A",
+      "explanation": "正确答案是 A（L202@sina.com）。该题属于“使用简单的因特网应用”知识点。"
+    }
+  ]
+};
+
+</script>
+  <script>
+(() => {
+  const bank = window.QUESTION_BANK;
+  if (!bank || !Array.isArray(bank.questions)) {
+    alert("题库加载失败，请检查 questions-data.js");
+    return;
+  }
+
+  const WRONG_BOOK_KEY = "it_level1_wrongbook_v1";
+
+  const dom = {
+    setupPanel: document.getElementById("setup-panel"),
+    quizPanel: document.getElementById("quiz-panel"),
+    resultPanel: document.getElementById("result-panel"),
+    wrongbookPanel: document.getElementById("wrongbook-panel"),
+
+    mode: document.getElementById("mode"),
+    category: document.getElementById("category"),
+    count: document.getElementById("count"),
+    levelCount: document.getElementById("level-count"),
+    levelTotal: document.getElementById("level-total"),
+    categoryField: document.getElementById("category-field"),
+    countField: document.getElementById("count-field"),
+    levelFields: document.getElementById("level-fields"),
+    setupTip: document.getElementById("setup-tip"),
+
+    startBtn: document.getElementById("start-btn"),
+    prevBtn: document.getElementById("prev-btn"),
+    nextBtn: document.getElementById("next-btn"),
+    submitBtn: document.getElementById("submit-btn"),
+    restartBtn: document.getElementById("restart-btn"),
+    backBtn: document.getElementById("back-btn"),
+
+    openWrongbookBtn: document.getElementById("open-wrongbook-btn"),
+    resultWrongbookBtn: document.getElementById("result-wrongbook-btn"),
+    closeWrongbookBtn: document.getElementById("close-wrongbook-btn"),
+    clearWrongbookBtn: document.getElementById("clear-wrongbook-btn"),
+
+    modeTitle: document.getElementById("mode-title"),
+    progress: document.getElementById("progress"),
+    scorePreview: document.getElementById("score-preview"),
+    timer: document.getElementById("timer"),
+    questionCard: document.getElementById("question-card"),
+    progressFill: document.getElementById("progress-fill"),
+    funTip: document.getElementById("fun-tip"),
+    eggToast: document.getElementById("egg-toast"),
+
+    summary: document.getElementById("summary"),
+    wrongList: document.getElementById("wrong-list"),
+    resultTitle: document.getElementById("result-title"),
+    celebration: document.getElementById("celebration"),
+
+    wrongbookTip: document.getElementById("wrongbook-tip"),
+    wrongbookList: document.getElementById("wrongbook-list"),
+  };
+
+  const state = {
+    mode: "random",
+    pool: [],
+    current: 0,
+    answers: {},
+    streak: 0,
+    wrongStreak: 0,
+    judged: {},
+    startedAt: 0,
+    timerId: null,
+    themeTimerId: null,
+    wrongBook: {},
+    level: {
+      index: 1,
+      total: 1,
+      perCount: 10,
+      allPassed: true,
+      results: []
+    }
+  };
+
+  function loadWrongBook() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(WRONG_BOOK_KEY) || "{}");
+      state.wrongBook = parsed && typeof parsed === "object" ? parsed : {};
+    } catch {
+      state.wrongBook = {};
+    }
+  }
+
+  function saveWrongBook() {
+    localStorage.setItem(WRONG_BOOK_KEY, JSON.stringify(state.wrongBook));
+  }
+
+  function wrongQuestionList() {
+    const ids = new Set(Object.keys(state.wrongBook).map((k) => Number(k)));
+    return bank.questions.filter((q) => ids.has(q.id));
+  }
+
+  function updateSetupTip() {
+    const wrongCount = wrongQuestionList().length;
+    dom.setupTip.textContent = `题库已加载：${bank.total} 题，${bank.categories.length} 个分类，错题本 ${wrongCount} 题。`;
+  }
+
+  function shuffle(arr) {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function setModeUI() {
+    const m = dom.mode.value;
+    dom.categoryField.hidden = m !== "category";
+    dom.countField.hidden = m === "level";
+    dom.levelFields.hidden = m !== "level";
+  }
+
+  function fillCategories() {
+    dom.category.innerHTML = bank.categories.map((c) => `<option value="${c}">${c}</option>`).join("");
+  }
+
+  function formatDuration(ms) {
+    const totalSec = Math.floor(ms / 1000);
+    const min = Math.floor(totalSec / 60);
+    const sec = totalSec % 60;
+    return `${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  }
+
+  function updateTimer() {
+    const now = Date.now();
+    dom.timer.textContent = `用时：${formatDuration(now - state.startedAt)}`;
+  }
+
+  function modeName(mode) {
+    if (mode === "random") return "随机做题";
+    if (mode === "category") return "题型分类练习";
+    if (mode === "wrong") return "只练习错题";
+    return "闯关模式";
+  }
+
+  function startSession(list, title) {
+    state.pool = list;
+    state.current = 0;
+    state.answers = {};
+    state.streak = 0;
+    state.wrongStreak = 0;
+    state.judged = {};
+    state.startedAt = Date.now();
+
+    if (state.timerId) clearInterval(state.timerId);
+    state.timerId = setInterval(updateTimer, 1000);
+    updateTimer();
+
+    dom.modeTitle.textContent = title;
+    dom.setupPanel.hidden = true;
+    dom.resultPanel.hidden = true;
+    dom.wrongbookPanel.hidden = true;
+    dom.quizPanel.hidden = false;
+    dom.funTip.textContent = "开始答题啦，先拿下第一题。";
+    hideEggToast();
+    clearTheme();
+    renderQuestion();
+  }
+
+  function randomChance(probability) {
+    return Math.random() < probability;
+  }
+
+  function pickRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function showEggToast(message, type = "normal") {
+    dom.eggToast.textContent = message;
+    dom.eggToast.className = `egg-toast ${type}`;
+    dom.eggToast.hidden = false;
+    window.clearTimeout(showEggToast.timerId);
+    showEggToast.timerId = window.setTimeout(() => {
+      dom.eggToast.hidden = true;
+    }, 2600);
+  }
+
+  function hideEggToast() {
+    dom.eggToast.hidden = true;
+  }
+
+  function clearTheme() {
+    document.body.classList.remove("theme-mint", "theme-sunset", "theme-sky");
+    if (state.themeTimerId) {
+      clearTimeout(state.themeTimerId);
+      state.themeTimerId = null;
+    }
+  }
+
+  function triggerThemeEgg() {
+    const theme = pickRandom(["theme-mint", "theme-sunset", "theme-sky"]);
+    clearTheme();
+    document.body.classList.add(theme);
+    state.themeTimerId = setTimeout(() => clearTheme(), 8000);
+    showEggToast("彩蛋触发：幸运主题已开启 8 秒", "lucky");
+  }
+
+  function maybeTriggerEasterEgg(eventType) {
+    const answeredCount = Object.keys(state.answers).length;
+    const candidates = [];
+
+    if (eventType === "correct") {
+      if (state.streak >= 5 && randomChance(0.35)) {
+        candidates.push(() => triggerThemeEgg());
+      }
+      if (state.streak >= 3 && randomChance(0.3)) {
+        candidates.push(() => showEggToast(pickRandom([
+          `连对 ${state.streak} 题，学霸状态拉满`,
+          "手感在线，继续保持",
+          "太稳了，这题气势很足"
+        ]), "success"));
+      }
+      if (answeredCount > 0 && answeredCount % 10 === 0 && randomChance(0.25)) {
+        candidates.push(() => showEggToast("里程碑彩蛋：已完成 10 的倍数题目", "lucky"));
+      }
+    }
+
+    if (eventType === "wrong") {
+      if (state.wrongStreak >= 2 && randomChance(0.45)) {
+        candidates.push(() => showEggToast(pickRandom([
+          "别急，你已经在进步了",
+          "错题就是提分入口，继续冲",
+          "稳住节奏，下一题拿下"
+        ]), "encourage"));
+      }
+      if (state.wrongStreak >= 4 && randomChance(0.35)) {
+        candidates.push(() => showEggToast("建议彩蛋：先标记难题，最后再回看", "encourage"));
+      }
+    }
+
+    if (randomChance(0.06)) {
+      candidates.push(() => showEggToast("神秘彩蛋：你今天的努力值 +1", "lucky"));
+    }
+
+    if (candidates.length > 0) {
+      pickRandom(candidates)();
+    }
+  }
+
+  function feedbackText(selected, correct, qid) {
+    const oldState = state.judged[qid];
+    const isCorrect = selected === correct;
+
+    if (oldState === isCorrect) {
+      return isCorrect ? `答案已是正确，连对 x${state.streak}。` : "这题先记住，下一题继续冲。";
+    }
+
+    state.judged[qid] = isCorrect;
+    if (isCorrect) {
+      state.streak += 1;
+      state.wrongStreak = 0;
+      maybeTriggerEasterEgg("correct");
+      return state.streak >= 5 ? `超强连对 x${state.streak}，状态超好。` : `回答正确，连对 x${state.streak}。`;
+    }
+
+    state.streak = 0;
+    state.wrongStreak += 1;
+    maybeTriggerEasterEgg("wrong");
+    return "这题先记住，下一题继续冲。";
+  }
+
+  function renderQuestion() {
+    const total = state.pool.length;
+    const q = state.pool[state.current];
+    const picked = state.answers[q.id] || "";
+
+    dom.progress.textContent = `进度：${state.current + 1}/${total}`;
+    dom.progressFill.style.width = `${Math.round(((state.current + 1) / total) * 100)}%`;
+
+    const answered = Object.keys(state.answers).length;
+    const preview = answered === 0 ? 0 : Math.round((estimateCorrect() / answered) * 100);
+    dom.scorePreview.textContent = `当前作答：${answered}题 | 预估正确率：${preview}%`;
+
+    const opts = ["A", "B", "C", "D"].map((k) => {
+      const text = q.options[k] ?? "";
+      const checked = picked === k ? "checked" : "";
+      const cls = picked === k ? "option selected" : "option";
+      return `<label class="${cls}" data-key="${k}"><input type="radio" name="opt" value="${k}" ${checked}>${k}. ${text}</label>`;
+    }).join("");
+
+    dom.questionCard.innerHTML = `
+      <div class="question-title">${q.id}. [${q.category}] ${q.question}</div>
+      <div class="options">${opts}</div>
+    `;
+
+    dom.prevBtn.disabled = state.current === 0;
+    dom.nextBtn.disabled = state.current === total - 1;
+
+    dom.questionCard.querySelectorAll("label.option").forEach((el) => {
+      el.addEventListener("click", () => {
+        const k = el.getAttribute("data-key");
+        if (state.answers[q.id] === k) return;
+        state.answers[q.id] = k;
+        dom.funTip.textContent = feedbackText(k, q.answer, q.id);
+        renderQuestion();
+      });
+    });
+  }
+
+  function estimateCorrect() {
+    let c = 0;
+    for (const q of state.pool) {
+      if (state.answers[q.id] && state.answers[q.id] === q.answer) c += 1;
+    }
+    return c;
+  }
+
+  function scoreSession() {
+    const total = state.pool.length;
+    const wrong = [];
+    let correct = 0;
+
+    for (const q of state.pool) {
+      const chosen = state.answers[q.id] || "未作答";
+      const key = String(q.id);
+      if (chosen === q.answer) {
+        correct += 1;
+        if (state.mode === "wrong" && state.wrongBook[key]) {
+          delete state.wrongBook[key];
+        }
+      } else {
+        wrong.push({ q, chosen });
+        const old = state.wrongBook[key] || { wrongCount: 0 };
+        state.wrongBook[key] = {
+          wrongCount: old.wrongCount + 1,
+          lastChosen: chosen,
+          lastWrongAt: new Date().toISOString()
+        };
+      }
+    }
+
+    saveWrongBook();
+    updateSetupTip();
+
+    const rate = total === 0 ? 0 : (correct / total);
+    const score = Math.round(rate * 100);
+    return { total, correct, wrong, score, rate };
+  }
+
+  function showResult(result, extraTitle = "") {
+    if (state.timerId) {
+      clearInterval(state.timerId);
+      state.timerId = null;
+    }
+
+    const duration = formatDuration(Date.now() - state.startedAt);
+
+    dom.quizPanel.hidden = true;
+    dom.resultPanel.hidden = false;
+    dom.wrongbookPanel.hidden = true;
+    dom.celebration.hidden = true;
+    dom.celebration.innerHTML = "";
+
+    dom.summary.innerHTML = `
+      <div class="item"><span>总题数</span><strong>${result.total}</strong></div>
+      <div class="item"><span>答对题数</span><strong>${result.correct}</strong></div>
+      <div class="item"><span>得分</span><strong>${result.score}</strong></div>
+      <div class="item"><span>用时</span><strong>${duration}</strong></div>
+    `;
+
+    const title = extraTitle || "本轮练习完成";
+    dom.resultTitle.textContent = `${title}｜${result.score >= 90 ? "学霸模式" : result.score >= 75 ? "稳定发挥" : "继续加油"}`;
+
+    if (result.wrong.length === 0) {
+      dom.celebration.hidden = false;
+      dom.celebration.innerHTML = `<div class="burst">🎉 ✨ 🌸 🎈 ⭐</div><p class="good">全答对！你太厉害了，继续保持满分状态。</p>`;
+      dom.wrongList.innerHTML = `<p class="good">本轮全部答对，继续保持。</p>`;
+      return;
+    }
+
+    dom.wrongList.innerHTML = result.wrong.map(({ q, chosen }) => {
+      const chosenText = chosen === "未作答" ? "未作答" : `${chosen}. ${q.options[chosen]}`;
+      return `
+        <article class="wrong-item">
+          <p><strong>${q.id}. [${q.category}] ${q.question}</strong></p>
+          <p class="bad">你的答案：${chosenText}</p>
+          <p class="good">正确答案：${q.answer}. ${q.options[q.answer]}</p>
+          <p>解析：${q.explanation}</p>
+        </article>
+      `;
+    }).join("");
+  }
+
+  function renderWrongBook() {
+    const list = wrongQuestionList();
+    dom.wrongbookTip.textContent = `当前错题本共 ${list.length} 题。你可以逐题复习，也可以切到“只练习错题”模式。`;
+
+    if (list.length === 0) {
+      dom.wrongbookList.innerHTML = `<p class="good">错题本为空，继续保持。</p>`;
+      return;
+    }
+
+    const sorted = list.sort((a, b) => (state.wrongBook[String(b.id)].wrongCount || 0) - (state.wrongBook[String(a.id)].wrongCount || 0));
+    dom.wrongbookList.innerHTML = sorted.map((q) => {
+      const meta = state.wrongBook[String(q.id)] || { wrongCount: 0, lastChosen: "-" };
+      const last = meta.lastWrongAt ? new Date(meta.lastWrongAt).toLocaleString() : "-";
+      return `
+        <article class="wrong-item">
+          <p><strong>${q.id}. [${q.category}] ${q.question}</strong></p>
+          <p>你上次错选：${meta.lastChosen}</p>
+          <p>累计错题次数：${meta.wrongCount} | 最近错误时间：${last}</p>
+          <p class="good">正确答案：${q.answer}. ${q.options[q.answer]}</p>
+          <p>解析：${q.explanation}</p>
+          <button class="btn" data-remove-id="${q.id}">已掌握，移出错题本</button>
+        </article>
+      `;
+    }).join("");
+
+    dom.wrongbookList.querySelectorAll("button[data-remove-id]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-remove-id");
+        delete state.wrongBook[id];
+        saveWrongBook();
+        updateSetupTip();
+        renderWrongBook();
+      });
+    });
+  }
+
+  function openWrongBookPanel() {
+    if (state.timerId) {
+      clearInterval(state.timerId);
+      state.timerId = null;
+    }
+    dom.setupPanel.hidden = true;
+    dom.quizPanel.hidden = true;
+    dom.resultPanel.hidden = true;
+    dom.wrongbookPanel.hidden = false;
+    clearTheme();
+    hideEggToast();
+    renderWrongBook();
+  }
+
+  function nextLevelOrFinish() {
+    const result = scoreSession();
+    const pass = result.score >= 60;
+
+    state.level.results.push({
+      level: state.level.index,
+      ...result,
+      pass
+    });
+
+    if (!pass) {
+      state.level.allPassed = false;
+      const details = state.level.results.map((r) => `第${r.level}关 ${r.score}分`).join("；");
+      showResult(result, `闯关结束（未通过第${state.level.index}关）。${details}`);
+      return;
+    }
+
+    if (state.level.index >= state.level.total) {
+      const totalQuestions = state.level.results.reduce((n, r) => n + r.total, 0);
+      const totalCorrect = state.level.results.reduce((n, r) => n + r.correct, 0);
+      const mergedWrong = state.level.results.flatMap((r) => r.wrong);
+      showResult({
+        total: totalQuestions,
+        correct: totalCorrect,
+        wrong: mergedWrong,
+        score: Math.round((totalCorrect / totalQuestions) * 100),
+        rate: totalCorrect / totalQuestions
+      }, `恭喜通关 ${state.level.total} 关`);
+      return;
+    }
+
+    alert(`第 ${state.level.index} 关通过，得分 ${result.score} 分，进入下一关。`);
+    state.level.index += 1;
+    const shuffled = shuffle(bank.questions).slice(0, state.level.perCount);
+    startSession(shuffled, `闯关模式 - 第 ${state.level.index}/${state.level.total} 关`);
+  }
+
+  function startBySetup() {
+    state.mode = dom.mode.value;
+
+    if (state.mode === "random") {
+      const count = Number(dom.count.value);
+      if (!Number.isInteger(count) || count < 1 || count > bank.questions.length) {
+        dom.setupTip.textContent = `题量应在 1-${bank.questions.length} 之间`;
+        return;
+      }
+      const picked = shuffle(bank.questions).slice(0, count);
+      startSession(picked, `${modeName(state.mode)} | 共 ${count} 题`);
+      return;
+    }
+
+    if (state.mode === "category") {
+      const category = dom.category.value;
+      const group = bank.questions.filter((q) => q.category === category);
+      const count = Number(dom.count.value);
+      if (!Number.isInteger(count) || count < 1 || count > group.length) {
+        dom.setupTip.textContent = `该分类最多 ${group.length} 题，请重新设置题量`;
+        return;
+      }
+      const picked = shuffle(group).slice(0, count);
+      startSession(picked, `${modeName(state.mode)} | ${category} | 共 ${count} 题`);
+      return;
+    }
+
+    if (state.mode === "wrong") {
+      const group = wrongQuestionList();
+      if (group.length === 0) {
+        dom.setupTip.textContent = "错题本为空，请先完成一轮练习后再用该模式。";
+        return;
+      }
+      const count = Number(dom.count.value);
+      if (!Number.isInteger(count) || count < 1 || count > group.length) {
+        dom.setupTip.textContent = `当前错题本共 ${group.length} 题，题量应在 1-${group.length} 之间`;
+        return;
+      }
+      const picked = shuffle(group).slice(0, count);
+      startSession(picked, `${modeName(state.mode)} | 共 ${count} 题`);
+      return;
+    }
+
+    const perCount = Number(dom.levelCount.value);
+    const levels = Number(dom.levelTotal.value);
+    if (!Number.isInteger(perCount) || perCount < 1 || perCount > 50) {
+      dom.setupTip.textContent = "每关题量应在 1-50 之间";
+      return;
+    }
+    if (!Number.isInteger(levels) || levels < 1 || levels > 40) {
+      dom.setupTip.textContent = "闯关关数应在 1-40 之间";
+      return;
+    }
+
+    state.level.index = 1;
+    state.level.total = levels;
+    state.level.perCount = perCount;
+    state.level.results = [];
+    state.level.allPassed = true;
+
+    const first = shuffle(bank.questions).slice(0, perCount);
+    startSession(first, `闯关模式 - 第 1/${levels} 关`);
+  }
+
+  dom.mode.addEventListener("change", setModeUI);
+  dom.startBtn.addEventListener("click", startBySetup);
+
+  dom.prevBtn.addEventListener("click", () => {
+    if (state.current > 0) {
+      state.current -= 1;
+      renderQuestion();
+    }
+  });
+
+  dom.nextBtn.addEventListener("click", () => {
+    if (state.current < state.pool.length - 1) {
+      state.current += 1;
+      renderQuestion();
+    }
+  });
+
+  dom.submitBtn.addEventListener("click", () => {
+    if (state.mode === "level") {
+      nextLevelOrFinish();
+      return;
+    }
+    showResult(scoreSession());
+  });
+
+  dom.backBtn.addEventListener("click", () => {
+    const answered = Object.keys(state.answers).length;
+    if (answered > 0) {
+      const ok = window.confirm("返回设置将结束当前练习，确认返回吗？");
+      if (!ok) return;
+    }
+    if (state.timerId) {
+      clearInterval(state.timerId);
+      state.timerId = null;
+    }
+    dom.setupPanel.hidden = false;
+    dom.resultPanel.hidden = true;
+    dom.quizPanel.hidden = true;
+    dom.wrongbookPanel.hidden = true;
+    clearTheme();
+    hideEggToast();
+    updateSetupTip();
+  });
+
+  dom.restartBtn.addEventListener("click", () => {
+    dom.setupPanel.hidden = false;
+    dom.resultPanel.hidden = true;
+    dom.quizPanel.hidden = true;
+    dom.wrongbookPanel.hidden = true;
+    dom.wrongList.innerHTML = "";
+    dom.resultTitle.textContent = "";
+    dom.celebration.hidden = true;
+    dom.celebration.innerHTML = "";
+    clearTheme();
+    hideEggToast();
+    updateSetupTip();
+  });
+
+  dom.openWrongbookBtn.addEventListener("click", openWrongBookPanel);
+  dom.resultWrongbookBtn.addEventListener("click", openWrongBookPanel);
+  dom.closeWrongbookBtn.addEventListener("click", () => {
+    dom.setupPanel.hidden = false;
+    dom.quizPanel.hidden = true;
+    dom.resultPanel.hidden = true;
+    dom.wrongbookPanel.hidden = true;
+    clearTheme();
+    hideEggToast();
+    updateSetupTip();
+  });
+
+  dom.clearWrongbookBtn.addEventListener("click", () => {
+    const ok = window.confirm("确认清空全部错题记录吗？");
+    if (!ok) return;
+    state.wrongBook = {};
+    saveWrongBook();
+    updateSetupTip();
+    renderWrongBook();
+  });
+
+  fillCategories();
+  loadWrongBook();
+  setModeUI();
+  updateSetupTip();
+})();
+
+</script>
+</body>
+</html>
